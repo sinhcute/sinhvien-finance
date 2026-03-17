@@ -1,0 +1,2969 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FPT Student – Nền Tảng Sinh Viên</title>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090e;
+  --bg2: #0e1018;
+  --bg3: #141721;
+  --bg4: #1c2030;
+  --bg5: #232840;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.12);
+  --orange: #ff6b00;
+  --orange2: #ff8c42;
+  --orange-dim: rgba(255,107,0,0.12);
+  --orange-glow: rgba(255,107,0,0.25);
+  --red: #ff3d5a;
+  --red-dim: rgba(255,61,90,0.12);
+  --green: #00e87a;
+  --green-dim: rgba(0,232,122,0.12);
+  --blue: #00b4ff;
+  --blue-dim: rgba(0,180,255,0.12);
+  --purple: #9b5de5;
+  --purple-dim: rgba(155,93,229,0.12);
+  --yellow: #ffd166;
+  --yellow-dim: rgba(255,209,102,0.12);
+  --text: #eef0f8;
+  --text2: #7c849a;
+  --text3: #474f65;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;scroll-behavior:smooth;}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;letter-spacing:-0.01em;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:99px;}
+
+/* ── AUTH SCREEN ── */
+.auth-screen{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,107,0,0.18) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,180,255,0.08) 0%, transparent 50%),
+              var(--bg);
+}
+.auth-bg-grid{
+  position:absolute;inset:0;
+  background-image: linear-gradient(rgba(255,107,0,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,107,0,0.04) 1px, transparent 1px);
+  background-size:50px 50px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+.auth-particles{position:absolute;inset:0;pointer-events:none;}
+.auth-box{
+  width:420px;max-width:95vw;
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-xl);
+  padding:40px;
+  position:relative;
+  box-shadow: 0 0 80px rgba(255,107,0,0.08), 0 32px 64px rgba(0,0,0,0.5);
+}
+.auth-box::before{
+  content:'';position:absolute;inset:-1px;
+  border-radius:calc(var(--radius-xl) + 1px);
+  background:linear-gradient(135deg,rgba(255,107,0,0.3),transparent 50%,rgba(0,180,255,0.15));
+  z-index:-1;
+}
+.auth-logo{text-align:center;margin-bottom:32px;}
+.auth-logo-icon{
+  width:64px;height:64px;
+  background:linear-gradient(135deg,var(--orange),#ff3d00);
+  border-radius:18px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:'Epilogue',sans-serif;
+  font-weight:900;font-size:20px;color:#fff;
+  letter-spacing:-1px;
+  box-shadow:0 8px 24px rgba(255,107,0,0.35);
+  margin-bottom:14px;
+}
+.auth-logo-name{font-family:'Epilogue',sans-serif;font-size:28px;font-weight:900;letter-spacing:-1px;}
+.auth-logo-name span{color:var(--orange);}
+.auth-logo-sub{font-size:13px;color:var(--text2);margin-top:4px;font-weight:500;}
+
+.auth-tabs{display:flex;background:var(--bg3);border-radius:10px;padding:4px;margin-bottom:28px;}
+.auth-tab{
+  flex:1;padding:9px;text-align:center;
+  font-size:14px;font-weight:700;font-family:'Manrope',sans-serif;
+  border:none;background:none;color:var(--text2);
+  border-radius:7px;cursor:pointer;transition:all 0.2s;letter-spacing:0.01em;
+}
+.auth-tab.active{background:var(--orange);color:#fff;box-shadow:0 4px 12px rgba(255,107,0,0.35);}
+
+.form-group{margin-bottom:16px;}
+.form-label{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:7px;}
+.form-input{
+  width:100%;padding:12px 16px;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:10px;color:var(--text);
+  font-size:14px;font-family:'Manrope',sans-serif;font-weight:500;
+  outline:none;transition:all 0.2s;
+}
+.form-input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,107,0,0.12);}
+.form-input::placeholder{color:var(--text3);font-weight:400;}
+.form-input-icon{position:relative;}
+.form-input-icon .form-input{padding-left:42px;}
+.form-input-icon .input-icon{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  color:var(--text3);font-size:16px;pointer-events:none;
+}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 20px;border-radius:10px;
+  font-size:14px;font-weight:700;font-family:'Manrope',sans-serif;letter-spacing:0.01em;
+  cursor:pointer;transition:all 0.2s;border:none;
+}
+.btn-full{width:100%;}
+.btn-primary{
+  background:linear-gradient(135deg,var(--orange),#e55a00);
+  color:#fff;
+  box-shadow:0 4px 16px rgba(255,107,0,0.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,0,0.4);}
+.btn-primary:active{transform:translateY(0);}
+.btn-ghost{background:var(--bg3);color:var(--text);border:1px solid var(--border2);}
+.btn-ghost:hover{background:var(--bg4);border-color:var(--orange);color:var(--orange);}
+.btn-danger{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,61,90,0.2);}
+.btn-success{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,232,122,0.2);}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:8px;}
+.btn-icon{padding:8px;border-radius:8px;}
+
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--text3);font-size:12px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ── APP LAYOUT ── */
+.app{display:flex;min-height:100vh;}
+.sidebar{
+  width:240px;min-height:100vh;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;z-index:100;
+  transition:transform 0.3s;
+}
+.sidebar-top{
+  padding:22px 18px 18px;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-logo{display:flex;align-items:center;gap:11px;}
+.sidebar-logo-icon{
+  width:38px;height:38px;
+  background:linear-gradient(135deg,var(--orange),#e55a00);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Epilogue',sans-serif;font-weight:900;font-size:13px;color:#fff;
+  box-shadow:0 4px 12px rgba(255,107,0,0.3);
+  flex-shrink:0;
+}
+.sidebar-logo-text .name{font-family:'Epilogue',sans-serif;font-size:15px;font-weight:900;letter-spacing:-0.5px;}
+.sidebar-logo-text .name span{color:var(--orange);}
+.sidebar-logo-text .sub{font-size:10px;color:var(--text3);margin-top:1px;font-weight:500;}
+
+.sidebar-nav{flex:1;padding:14px 10px;overflow-y:auto;}
+.nav-section{margin-bottom:6px;}
+.nav-section-label{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);padding:8px 8px 5px;font-weight:600;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:10px;
+  cursor:pointer;font-size:13px;font-weight:600;
+  color:var(--text2);transition:all 0.15s;margin-bottom:2px;
+  position:relative;letter-spacing:0.005em;
+}
+.nav-item:hover{background:var(--bg3);color:var(--text);}
+.nav-item.active{background:var(--orange-dim);color:var(--orange);}
+.nav-item .nav-icon{width:18px;height:18px;flex-shrink:0;font-size:17px;text-align:center;}
+.nav-badge{
+  margin-left:auto;
+  background:var(--red);color:#fff;
+  font-size:10px;font-weight:700;
+  padding:2px 6px;border-radius:99px;
+  min-width:18px;text-align:center;
+}
+.nav-badge.orange{background:var(--orange);}
+
+.sidebar-bottom{padding:14px 10px;border-top:1px solid var(--border);}
+.user-mini{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;background:var(--bg3);
+  border-radius:var(--radius);cursor:pointer;
+  transition:background 0.15s;
+}
+.user-mini:hover{background:var(--bg4);}
+.user-avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;color:#fff;
+  flex-shrink:0;position:relative;
+}
+.user-avatar-status{
+  position:absolute;bottom:0;right:0;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--green);border:2px solid var(--bg3);
+}
+.user-mini-name{font-size:13px;font-weight:600;line-height:1.2;}
+.user-mini-level{font-size:11px;color:var(--orange);}
+.user-mini-pts{margin-left:auto;font-size:12px;font-weight:700;color:var(--yellow);}
+
+/* ── MAIN CONTENT ── */
+.main{margin-left:240px;flex:1;min-height:100vh;}
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(8,9,14,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:14px 28px;
+  display:flex;align-items:center;gap:16px;
+}
+.topbar-title{font-family:'Epilogue',sans-serif;font-size:18px;font-weight:800;flex:1;letter-spacing:-0.3px;}
+.topbar-search{
+  position:relative;flex:1;max-width:320px;
+}
+.topbar-search input{
+  width:100%;padding:9px 14px 9px 38px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:9px;color:var(--text);font-size:13px;
+  font-family:'Manrope',sans-serif;outline:none;transition:all 0.2s;
+}
+.topbar-search input:focus{border-color:var(--orange);}
+.topbar-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;}
+.topbar-actions{display:flex;align-items:center;gap:10px;}
+.topbar-notif{
+  position:relative;width:36px;height:36px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:16px;transition:all 0.15s;
+}
+.topbar-notif:hover{background:var(--bg4);border-color:var(--border2);}
+.notif-dot{
+  position:absolute;top:6px;right:6px;
+  width:8px;height:8px;background:var(--red);border-radius:50%;
+  border:2px solid var(--bg3);
+}
+.xp-bar-mini{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:9px;padding:6px 12px;
+}
+.xp-label{font-size:11px;color:var(--text2);font-weight:600;}
+.xp-track{width:80px;height:5px;background:var(--bg5);border-radius:99px;overflow:hidden;}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange2));border-radius:99px;transition:width 0.5s;}
+
+/* ── PAGE CONTENT ── */
+.page-content{padding:28px;max-width:1400px;}
+.view{display:none;}
+.view.active{display:block;}
+
+/* ── CARDS ── */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:22px;
+}
+.card-title{
+  font-family:'Epilogue',sans-serif;font-size:15px;font-weight:800;
+  margin-bottom:18px;
+  display:flex;align-items:center;justify-content:space-between;
+  letter-spacing:-0.2px;
+}
+.card-title-left{display:flex;align-items:center;gap:8px;}
+.card-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);}
+
+/* ── STATS GRID ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.stat-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:20px;
+  position:relative;overflow:hidden;
+  transition:transform 0.2s,border-color 0.2s;
+}
+.stat-card:hover{transform:translateY(-2px);border-color:var(--border2);}
+.stat-card::after{
+  content:'';position:absolute;
+  top:-20px;right:-20px;
+  width:80px;height:80px;border-radius:50%;
+  opacity:0.06;
+}
+.stat-card.orange::after{background:var(--orange);}
+.stat-card.green::after{background:var(--green);}
+.stat-card.blue::after{background:var(--blue);}
+.stat-card.purple::after{background:var(--purple);}
+.stat-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin-bottom:14px;
+}
+.stat-icon.orange{background:var(--orange-dim);}
+.stat-icon.green{background:var(--green-dim);}
+.stat-icon.blue{background:var(--blue-dim);}
+.stat-icon.purple{background:var(--purple-dim);}
+.stat-label{font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:0.09em;margin-bottom:6px;}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;}
+.stat-value.orange{color:var(--orange);}
+.stat-value.green{color:var(--green);}
+.stat-value.blue{color:var(--blue);}
+.stat-value.purple{color:var(--purple);}
+.stat-trend{font-size:12px;color:var(--text3);margin-top:5px;}
+.stat-trend.up{color:var(--green);}
+
+/* ── CONTENT GRID ── */
+.cg-2{display:grid;grid-template-columns:1fr 360px;gap:20px;}
+.cg-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+
+/* ── FOCUS TIMER ── */
+.focus-timer-wrap{
+  text-align:center;padding:30px 20px;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,var(--orange-glow),transparent 70%);
+}
+.timer-circle{
+  width:200px;height:200px;margin:0 auto 24px;
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.timer-svg{position:absolute;top:0;left:0;transform:rotate(-90deg);}
+.timer-display{
+  font-family:'JetBrains Mono',monospace;font-size:44px;font-weight:700;
+  color:var(--text);letter-spacing:-2px;
+}
+.timer-session{font-size:12px;color:var(--text3);margin-top:4px;font-weight:500;}
+.timer-controls{display:flex;gap:10px;justify-content:center;margin-top:20px;}
+.timer-modes{display:flex;gap:8px;justify-content:center;margin-bottom:24px;}
+.timer-mode-btn{
+  padding:6px 14px;border-radius:99px;
+  font-size:12px;font-weight:700;font-family:'Manrope',sans-serif;
+  cursor:pointer;border:none;
+  background:var(--bg4);color:var(--text2);
+  transition:all 0.15s;letter-spacing:0.01em;
+}
+.timer-mode-btn.active{background:var(--orange);color:#fff;}
+
+/* ── TASKS ── */
+.task-item{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;background:var(--bg3);
+  border-radius:var(--radius);margin-bottom:8px;
+  border:1px solid transparent;transition:all 0.2s;cursor:pointer;
+}
+.task-item:hover{border-color:var(--border2);background:var(--bg4);}
+.task-item.done{opacity:0.5;}
+.task-check{
+  width:22px;height:22px;border-radius:6px;
+  border:2px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;transition:all 0.2s;
+}
+.task-item.done .task-check{background:var(--green);border-color:var(--green);color:#000;}
+.task-text{flex:1;font-size:14px;font-weight:500;}
+.task-item.done .task-text{text-decoration:line-through;color:var(--text3);}
+.task-xp{
+  font-size:11px;font-weight:700;color:var(--yellow);
+  background:var(--yellow-dim);padding:3px 8px;border-radius:99px;
+}
+.task-cat{font-size:11px;color:var(--text3);}
+
+/* ── STUDY GROUPS ── */
+.group-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:18px;
+  transition:all 0.2s;cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.group-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.group-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--orange),var(--orange2));
+  opacity:0;transition:opacity 0.2s;
+}
+.group-card:hover::before{opacity:1;}
+.group-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.group-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.group-name{font-family:'Epilogue',sans-serif;font-size:15px;font-weight:800;margin-bottom:3px;letter-spacing:-0.2px;}
+.group-desc{font-size:12px;color:var(--text2);line-height:1.4;}
+.group-meta{display:flex;align-items:center;gap:12px;}
+.group-meta-item{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:4px;}
+.members-stack{display:flex;}
+.member-avatar{
+  width:26px;height:26px;border-radius:50%;
+  border:2px solid var(--bg3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff;
+  margin-left:-8px;
+}
+.member-avatar:first-child{margin-left:0;}
+.group-tag{
+  padding:3px 8px;border-radius:99px;
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;
+}
+.group-tag.open{background:var(--green-dim);color:var(--green);}
+.group-tag.full{background:var(--red-dim);color:var(--red);}
+
+/* ── EVENTS ── */
+.event-item{
+  display:flex;gap:14px;padding:14px 16px;
+  background:var(--bg3);border-radius:var(--radius);
+  border:1px solid var(--border);margin-bottom:10px;
+  transition:all 0.2s;cursor:pointer;
+}
+.event-item:hover{border-color:var(--border2);background:var(--bg4);}
+.event-date-box{
+  width:44px;flex-shrink:0;text-align:center;
+  background:var(--orange-dim);border-radius:10px;
+  padding:8px 4px;
+}
+.event-day{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--orange);line-height:1;}
+.event-month{font-size:10px;color:var(--orange2);font-weight:600;text-transform:uppercase;}
+.event-info{flex:1;}
+.event-title{font-size:14px;font-weight:600;margin-bottom:4px;}
+.event-desc{font-size:12px;color:var(--text2);line-height:1.4;}
+.event-tags{display:flex;gap:6px;margin-top:8px;}
+.event-tag{
+  padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700;
+}
+.event-tag.academic{background:var(--blue-dim);color:var(--blue);}
+.event-tag.social{background:var(--purple-dim);color:var(--purple);}
+.event-tag.sport{background:var(--green-dim);color:var(--green);}
+.event-tag.career{background:var(--yellow-dim);color:var(--yellow);}
+.event-tag.hot{background:var(--orange-dim);color:var(--orange);}
+
+/* ── CALL MODAL ── */
+.call-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(10px);
+  z-index:500;
+  display:none;align-items:center;justify-content:center;
+}
+.call-overlay.show{display:flex;}
+.call-modal{
+  width:320px;
+  background:linear-gradient(160deg,#1a1f35,#0e1018);
+  border:1px solid var(--border2);border-radius:28px;
+  padding:40px 30px;text-align:center;
+  box-shadow:0 32px 80px rgba(0,0,0,0.8);
+  animation:callIn 0.3s cubic-bezier(.4,0,.2,1);
+}
+@keyframes callIn{from{opacity:0;transform:scale(0.9)translateY(20px);}to{opacity:1;transform:none;}}
+.call-avatar-wrap{position:relative;display:inline-block;margin-bottom:20px;}
+.call-avatar{
+  width:90px;height:90px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;font-weight:700;color:#fff;
+  margin:0 auto;position:relative;z-index:1;
+}
+.call-ring{
+  position:absolute;inset:-10px;border-radius:50%;
+  border:2px solid rgba(255,107,0,0.3);
+  animation:ring 1.5s ease-out infinite;
+}
+.call-ring:nth-child(2){inset:-20px;animation-delay:0.5s;border-color:rgba(255,107,0,0.15);}
+.call-ring:nth-child(3){inset:-30px;animation-delay:1s;border-color:rgba(255,107,0,0.07);}
+@keyframes ring{0%{transform:scale(1);opacity:1;}100%{transform:scale(1.3);opacity:0;}}
+.call-name{font-family:'Epilogue',sans-serif;font-size:22px;font-weight:900;margin-bottom:4px;letter-spacing:-0.3px;}
+.call-status{font-size:13px;color:var(--text2);margin-bottom:32px;}
+.call-actions{display:flex;justify-content:center;gap:30px;}
+.call-btn{
+  width:62px;height:62px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;cursor:pointer;border:none;
+  transition:all 0.2s;
+}
+.call-btn.answer{background:var(--green);box-shadow:0 8px 24px rgba(0,232,122,0.35);}
+.call-btn.answer:hover{transform:scale(1.1);}
+.call-btn.decline{background:var(--red);box-shadow:0 8px 24px rgba(255,61,90,0.35);}
+.call-btn.decline:hover{transform:scale(1.1);}
+
+/* ── REWARDS ── */
+.reward-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:16px;
+  text-align:center;transition:all 0.2s;
+  position:relative;overflow:hidden;
+}
+.reward-card:hover{border-color:var(--orange);transform:translateY(-2px);}
+.reward-card.locked{opacity:0.5;filter:grayscale(0.5);}
+.reward-icon{font-size:36px;margin-bottom:10px;}
+.reward-name{font-size:13px;font-weight:700;margin-bottom:4px;}
+.reward-req{font-size:11px;color:var(--text3);}
+.reward-badge{
+  position:absolute;top:10px;right:10px;
+  font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:99px;
+}
+.reward-badge.unlocked{background:var(--green-dim);color:var(--green);}
+.reward-badge.locked{background:var(--bg4);color:var(--text3);}
+
+/* ── TEAM ── */
+.team-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:18px;
+  transition:all 0.2s;
+}
+.team-card:hover{border-color:var(--border2);}
+.team-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.team-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+.team-name{font-family:'Epilogue',sans-serif;font-size:16px;font-weight:800;letter-spacing:-0.2px;}
+.team-role{font-size:11px;color:var(--orange);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;}
+.team-members-list{display:flex;flex-direction:column;gap:8px;}
+.team-member-row{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 10px;background:var(--bg4);
+  border-radius:8px;
+}
+.team-member-av{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.team-member-info{flex:1;}
+.team-member-name{font-size:13px;font-weight:600;}
+.team-member-status{font-size:11px;}
+.team-member-status.online{color:var(--green);}
+.team-member-status.offline{color:var(--text3);}
+.call-mini-btn{
+  padding:5px 12px;border-radius:8px;border:none;cursor:pointer;
+  font-size:11px;font-weight:700;font-family:'Manrope',sans-serif;
+  background:var(--blue-dim);color:var(--blue);transition:all 0.15s;
+}
+.call-mini-btn:hover{background:rgba(0,180,255,0.2);}
+
+/* ── PROGRESS RING ── */
+.progress-ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;}
+.progress-ring-label{position:absolute;text-align:center;}
+
+/* ── LEADERBOARD ── */
+.lb-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:var(--bg3);
+  border-radius:10px;margin-bottom:8px;
+  border:1px solid transparent;transition:all 0.15s;
+}
+.lb-item:hover{border-color:var(--border2);}
+.lb-item.me{border-color:var(--orange);background:var(--orange-dim);}
+.lb-rank{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+  flex-shrink:0;
+}
+.lb-rank.gold{background:var(--yellow-dim);color:var(--yellow);}
+.lb-rank.silver{background:rgba(192,192,192,0.15);color:#c0c0c0;}
+.lb-rank.bronze{background:rgba(205,127,50,0.15);color:#cd7f32;}
+.lb-rank.other{background:var(--bg4);color:var(--text3);}
+.lb-name{flex:1;font-size:13px;font-weight:600;}
+.lb-pts{font-family:'Epilogue',sans-serif;font-size:14px;font-weight:800;color:var(--yellow);}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(8px);z-index:300;
+  display:none;align-items:center;justify-content:center;
+}
+.modal-overlay.show{display:flex;}
+.modal{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--radius-xl);padding:30px;
+  width:460px;max-width:96vw;
+  box-shadow:0 32px 80px rgba(0,0,0,0.6);
+  animation:modalIn 0.25s cubic-bezier(.4,0,.2,1);
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(16px)scale(0.97);}to{opacity:1;transform:none;}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.modal-title{font-family:'Epilogue',sans-serif;font-size:18px;font-weight:800;letter-spacing:-0.3px;}
+.modal-close{
+  width:32px;height:32px;border-radius:50%;background:var(--bg3);
+  border:none;color:var(--text2);cursor:pointer;font-size:18px;
+  display:flex;align-items:center;justify-content:center;transition:all 0.15s;
+}
+.modal-close:hover{background:var(--bg4);color:var(--text);}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:28px;right:28px;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:12px;padding:14px 20px;
+  font-size:13px;font-weight:600;z-index:999;
+  transform:translateY(80px);opacity:0;
+  transition:all 0.3s cubic-bezier(.4,0,.2,1);
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  max-width:320px;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{border-left:3px solid var(--green);color:var(--green);}
+.toast.error{border-left:3px solid var(--red);color:var(--red);}
+.toast.info{border-left:3px solid var(--orange);color:var(--orange);}
+
+/* ── STREAK WIDGET ── */
+.streak-widget{
+  background:linear-gradient(135deg,rgba(255,107,0,0.15),rgba(255,61,0,0.08));
+  border:1px solid rgba(255,107,0,0.25);border-radius:var(--radius-lg);padding:20px;
+  display:flex;align-items:center;gap:16px;
+}
+.streak-flame{font-size:40px;animation:flamePulse 2s infinite;}
+@keyframes flamePulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1)rotate(5deg);}}
+.streak-info{}
+.streak-count{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;color:var(--orange);line-height:1;}
+.streak-label{font-size:13px;color:var(--text2);margin-top:2px;}
+.streak-days{display:flex;gap:5px;margin-top:8px;}
+.streak-day{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;text-transform:uppercase;
+}
+.streak-day.done{background:var(--orange);color:#fff;}
+.streak-day.today{background:var(--orange-dim);color:var(--orange);border:1px solid var(--orange);}
+.streak-day.missed{background:var(--bg4);color:var(--text3);}
+
+/* ── NOTIFICATION PANEL ── */
+.notif-panel{
+  position:absolute;top:calc(100% + 8px);right:0;
+  width:340px;background:var(--bg2);
+  border:1px solid var(--border2);border-radius:var(--radius-lg);
+  box-shadow:0 16px 48px rgba(0,0,0,0.5);
+  z-index:200;display:none;
+  animation:notifIn 0.2s ease;
+}
+@keyframes notifIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}
+.notif-panel.show{display:block;}
+.notif-panel-header{
+  padding:14px 16px;border-bottom:1px solid var(--border);
+  font-family:'Epilogue',sans-serif;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.notif-item{
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  cursor:pointer;transition:background 0.15s;
+  display:flex;gap:10px;
+}
+.notif-item:hover{background:var(--bg3);}
+.notif-item:last-child{border-bottom:none;}
+.notif-item-icon{font-size:18px;flex-shrink:0;}
+.notif-item-text{font-size:12px;line-height:1.5;color:var(--text2);}
+.notif-item-text strong{color:var(--text);font-weight:600;}
+.notif-item-time{font-size:10px;color:var(--text3);margin-top:3px;}
+.notif-item.unread{background:rgba(255,107,0,0.04);}
+
+/* ── SCHEDULE TABLE ── */
+.schedule-table{width:100%;border-collapse:collapse;}
+.schedule-table th{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.07em;color:var(--text3);
+  padding:8px 12px;text-align:left;
+  border-bottom:1px solid var(--border);
+}
+.schedule-table td{
+  padding:10px 12px;border-bottom:1px solid var(--border);
+  font-size:13px;
+}
+.schedule-table tr:hover td{background:var(--bg3);}
+.schedule-table tr:last-child td{border-bottom:none;}
+.subject-badge{
+  display:inline-block;padding:3px 10px;border-radius:99px;
+  font-size:11px;font-weight:700;
+}
+
+/* ── MISC ── */
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:700;}
+.badge.orange{background:var(--orange-dim);color:var(--orange2);}
+.badge.green{background:var(--green-dim);color:var(--green);}
+.badge.red{background:var(--red-dim);color:var(--red);}
+.badge.blue{background:var(--blue-dim);color:var(--blue);}
+.sep{height:1px;background:var(--border);margin:16px 0;}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3);}
+.empty-icon{font-size:40px;margin-bottom:12px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+
+/* ── SECURITY: PASSWORD STRENGTH ── */
+.pw-wrap{position:relative;}
+.pw-toggle{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;
+  color:var(--text3);font-size:16px;transition:color 0.15s;
+}
+.pw-toggle:hover{color:var(--text2);}
+.pw-strength{margin-top:7px;}
+.pw-strength-bar{
+  display:flex;gap:3px;margin-bottom:5px;
+}
+.pw-seg{
+  flex:1;height:3px;border-radius:99px;
+  background:var(--bg5);transition:background 0.3s;
+}
+.pw-seg.weak{background:var(--red);}
+.pw-seg.fair{background:var(--yellow);}
+.pw-seg.good{background:var(--blue);}
+.pw-seg.strong{background:var(--green);}
+.pw-strength-label{font-size:11px;font-weight:700;letter-spacing:0.04em;}
+.pw-strength-label.weak{color:var(--red);}
+.pw-strength-label.fair{color:var(--yellow);}
+.pw-strength-label.good{color:var(--blue);}
+.pw-strength-label.strong{color:var(--green);}
+.security-badge{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 14px;
+  background:var(--green-dim);border:1px solid rgba(0,232,122,0.2);
+  border-radius:9px;margin-bottom:18px;
+  font-size:12px;font-weight:600;color:var(--green);
+}
+.rate-limit-msg{
+  text-align:center;padding:10px;
+  background:var(--red-dim);border-radius:8px;
+  font-size:12px;font-weight:600;color:var(--red);
+  margin-bottom:12px;display:none;
+}
+/* ── SECURITY: SESSION INDICATOR ── */
+.session-badge{
+  display:flex;align-items:center;gap:5px;
+  font-size:10px;font-weight:700;color:var(--green);
+  background:var(--green-dim);padding:3px 8px;border-radius:99px;
+}
+/* ── CAPTCHA ── */
+.captcha-wrap{
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:10px;padding:12px 16px;
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:16px;
+}
+.captcha-expr{
+  font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;
+  color:var(--orange);flex:1;letter-spacing:2px;
+}
+.captcha-input{
+  width:80px;padding:8px 12px;
+  background:var(--bg4);border:1px solid var(--border2);
+  border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;
+  font-size:16px;font-weight:700;text-align:center;outline:none;
+  transition:border-color 0.2s;
+}
+.captcha-input:focus{border-color:var(--orange);}
+.captcha-refresh{
+  background:none;border:none;cursor:pointer;
+  color:var(--text3);font-size:18px;transition:transform 0.3s;
+}
+.captcha-refresh:hover{transform:rotate(180deg);color:var(--orange);}
+
+@media(max-width:1100px){
+  .cg-2{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:none;}
+  .main{margin-left:0;}
+  .page-content{padding:16px;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .cg-3,.grid-3,.grid-4{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen" class="auth-screen">
+  <div class="auth-bg-grid"></div>
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">FPT</div>
+      <div class="auth-logo-name"><span>FPT</span> Student</div>
+      <div class="auth-logo-sub">🎓 Nền tảng hỗ trợ sinh viên toàn diện</div>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Đăng Nhập</button>
+      <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Đăng Ký</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-form">
+      <div class="security-badge">
+        <span>🔐</span>
+        <span>Kết nối bảo mật · Mã hoá SHA-256 · HTTPS</span>
+        <span class="session-badge" style="margin-left:auto">● Secure</span>
+      </div>
+      <div id="login-rate-msg" class="rate-limit-msg"></div>
+      <div class="form-group form-input-icon">
+        <label class="form-label">Email / Mã sinh viên</label>
+        <span class="input-icon">📧</span>
+        <input type="text" class="form-input" id="login-user" placeholder="abc@fpt.edu.vn" autocomplete="username">
+      </div>
+      <div class="form-group form-input-icon">
+        <label class="form-label">Mật khẩu</label>
+        <span class="input-icon">🔒</span>
+        <div class="pw-wrap">
+          <input type="password" class="form-input" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" style="padding-right:46px;">
+          <button type="button" class="pw-toggle" onclick="togglePw('login-pass',this)">👁</button>
+        </div>
+      </div>
+      <div id="login-captcha-wrap" style="display:none">
+        <div class="captcha-wrap">
+          <div class="captcha-expr" id="login-captcha-expr"></div>
+          <input type="number" class="captcha-input" id="login-captcha-input" placeholder="?">
+          <button type="button" class="captcha-refresh" onclick="genCaptcha('login')" title="Làm mới">↻</button>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:var(--text2);font-weight:500">
+          <input type="checkbox" id="remember-me" style="accent-color:var(--orange)"> Ghi nhớ đăng nhập
+        </label>
+        <span style="font-size:12px;color:var(--orange);cursor:pointer;font-weight:600;">Quên mật khẩu?</span>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()">🚀 Đăng Nhập</button>
+      <div class="divider">hoặc thử nhanh</div>
+      <button class="btn btn-ghost btn-full" onclick="demoLogin()" style="font-size:13px;">👨‍🎓 Đăng nhập Demo (không cần tài khoản)</button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="register-form" style="display:none">
+      <div class="security-badge">
+        <span>🛡️</span><span>Dữ liệu được mã hoá SHA-256 an toàn</span>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label class="form-label">Họ</label>
+          <input type="text" class="form-input" id="reg-lastname" placeholder="Nguyễn">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tên</label>
+          <input type="text" class="form-input" id="reg-firstname" placeholder="Văn A">
+        </div>
+      </div>
+      <div class="form-group form-input-icon">
+        <label class="form-label">Email FPT</label>
+        <span class="input-icon">📧</span>
+        <input type="email" class="form-input" id="reg-email" placeholder="abc@fpt.edu.vn">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mã sinh viên</label>
+        <input type="text" class="form-input" id="reg-student-id" placeholder="SE123456" oninput="validateStudentId(this)">
+        <div id="sid-hint" style="font-size:11px;color:var(--text3);margin-top:4px">Định dạng: SE/AI/IA/GD + 6 chữ số</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật khẩu</label>
+        <div class="pw-wrap">
+          <input type="password" class="form-input" id="reg-pass" placeholder="Tối thiểu 8 ký tự" oninput="checkPwStrength(this.value)" style="padding-right:46px;" autocomplete="new-password">
+          <button type="button" class="pw-toggle" onclick="togglePw('reg-pass',this)">👁</button>
+        </div>
+        <div class="pw-strength" id="pw-strength-wrap" style="display:none">
+          <div class="pw-strength-bar">
+            <div class="pw-seg" id="ps1"></div>
+            <div class="pw-seg" id="ps2"></div>
+            <div class="pw-seg" id="ps3"></div>
+            <div class="pw-seg" id="ps4"></div>
+          </div>
+          <span class="pw-strength-label" id="pw-strength-label"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Xác nhận mật khẩu</label>
+        <div class="pw-wrap">
+          <input type="password" class="form-input" id="reg-confirm" placeholder="Nhập lại mật khẩu" oninput="checkPwMatch()" style="padding-right:46px;" autocomplete="new-password">
+          <button type="button" class="pw-toggle" onclick="togglePw('reg-confirm',this)">👁</button>
+        </div>
+        <div id="pw-match-hint" style="font-size:11px;margin-top:4px;display:none"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Chuyên ngành</label>
+        <select class="form-input" id="reg-major">
+          <option value="">Chọn chuyên ngành</option>
+          <option>Software Engineering</option>
+          <option>Information Technology</option>
+          <option>Artificial Intelligence</option>
+          <option>Digital Marketing</option>
+          <option>Business Administration</option>
+          <option>Graphic Design</option>
+        </select>
+      </div>
+      <div class="captcha-wrap">
+        <div style="font-size:12px;color:var(--text2);font-weight:600;margin-right:4px">Xác nhận: </div>
+        <div class="captcha-expr" id="reg-captcha-expr"></div>
+        <input type="number" class="captcha-input" id="reg-captcha-input" placeholder="?">
+        <button type="button" class="captcha-refresh" onclick="genCaptcha('reg')" title="Làm mới">↻</button>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:18px;">
+        <input type="checkbox" id="terms-agree" style="margin-top:3px;accent-color:var(--orange)">
+        <label for="terms-agree" style="font-size:12px;color:var(--text2);cursor:pointer;font-weight:500">Tôi đồng ý với <span style="color:var(--orange)">Điều khoản sử dụng</span> và <span style="color:var(--orange)">Chính sách bảo mật</span> của FPT Student</label>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="doRegister()">✨ Tạo Tài Khoản</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app" style="display:none" class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">FPT</div>
+        <div class="sidebar-logo-text">
+          <div class="name"><span>FPT</span> Student</div>
+          <div class="sub">v2.0 · 2025</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">Tổng Quan</div>
+        <div class="nav-item active" onclick="nav('dashboard')">
+          <span class="nav-icon">🏠</span> Dashboard
+        </div>
+        <div class="nav-item" onclick="nav('focus')">
+          <span class="nav-icon">⏱️</span> Focus Timer
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Kỷ Luật</div>
+        <div class="nav-item" onclick="nav('tasks')">
+          <span class="nav-icon">✅</span> Nhiệm Vụ Hàng Ngày
+          <span class="nav-badge orange" id="badge-tasks">0</span>
+        </div>
+        <div class="nav-item" onclick="nav('rewards')">
+          <span class="nav-icon">🏆</span> Phần Thưởng
+        </div>
+        <div class="nav-item" onclick="nav('leaderboard')">
+          <span class="nav-icon">📊</span> Bảng Xếp Hạng
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Học Tập</div>
+        <div class="nav-item" onclick="nav('groups')">
+          <span class="nav-icon">👥</span> Nhóm Học Tập
+        </div>
+        <div class="nav-item" onclick="nav('teams')">
+          <span class="nav-icon">⚔️</span> Đội Của Tôi
+        </div>
+        <div class="nav-item" onclick="nav('schedule')">
+          <span class="nav-icon">📅</span> Lịch Học
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Cộng Đồng</div>
+        <div class="nav-item" onclick="nav('events')">
+          <span class="nav-icon">🎉</span> Sự Kiện FPT
+          <span class="nav-badge" id="badge-events">3</span>
+        </div>
+        <div class="nav-item" onclick="nav('summon')">
+          <span class="nav-icon">📡</span> Triệu Hồi Đồng Đội
+        </div>
+      </div>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-mini" id="sidebar-user" onclick="nav('profile')">
+        <div class="user-avatar" id="sidebar-avatar" style="background:linear-gradient(135deg,#ff6b00,#e55a00)">
+          <span id="sidebar-initials">SV</span>
+          <div class="user-avatar-status"></div>
+        </div>
+        <div>
+          <div class="user-mini-name" id="sidebar-name">Sinh Viên</div>
+          <div class="user-mini-level" id="sidebar-level">🌟 Level 1</div>
+        </div>
+        <div class="user-mini-pts" id="sidebar-pts">0 XP</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-search">
+        <span class="topbar-search-icon">🔍</span>
+        <input type="text" placeholder="Tìm kiếm...">
+      </div>
+      <div class="topbar-actions">
+        <div class="xp-bar-mini">
+          <span class="xp-label">XP</span>
+          <div class="xp-track"><div class="xp-fill" id="topbar-xp-fill" style="width:0%"></div></div>
+          <span class="xp-label" id="topbar-xp-val">0</span>
+        </div>
+        <div style="position:relative">
+          <div class="topbar-notif" onclick="toggleNotif()">🔔<div class="notif-dot" id="notif-dot"></div></div>
+          <div class="notif-panel" id="notif-panel">
+            <div class="notif-panel-header">
+              Thông Báo
+              <span style="font-size:11px;color:var(--orange);cursor:pointer" onclick="markAllRead()">Đọc tất cả</span>
+            </div>
+            <div id="notif-list"></div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">🚪 Thoát</button>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+<!-- ═══════════════ DASHBOARD ═══════════════ -->
+<div id="view-dashboard" class="view active">
+  <div class="stats-grid">
+    <div class="stat-card orange">
+      <div class="stat-icon orange">⚡</div>
+      <div class="stat-label">Điểm XP</div>
+      <div class="stat-value orange" id="d-xp">0</div>
+      <div class="stat-trend up" id="d-xp-trend">+0 hôm nay</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon green">🔥</div>
+      <div class="stat-label">Streak</div>
+      <div class="stat-value green" id="d-streak">0</div>
+      <div class="stat-trend">ngày liên tiếp</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-icon blue">⏱️</div>
+      <div class="stat-label">Thời Gian Focus</div>
+      <div class="stat-value blue" id="d-focus">0h</div>
+      <div class="stat-trend" id="d-focus-week">tuần này</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-icon purple">✅</div>
+      <div class="stat-label">Nhiệm Vụ Hoàn Thành</div>
+      <div class="stat-value purple" id="d-tasks-done">0/0</div>
+      <div class="stat-trend">hôm nay</div>
+    </div>
+  </div>
+
+  <div class="cg-2">
+    <div>
+      <div class="streak-widget" style="margin-bottom:20px">
+        <div class="streak-flame">🔥</div>
+        <div>
+          <div class="streak-count" id="streak-num">0</div>
+          <div class="streak-label">ngày kỷ luật liên tiếp</div>
+          <div class="streak-days" id="streak-days-row"></div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:6px">Mục tiêu</div>
+          <div style="font-family:'Epilogue',sans-serif;font-size:24px;font-weight:800;color:var(--orange)">30 ngày</div>
+          <div style="font-size:11px;color:var(--text3)">streak</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">
+          <div class="card-title-left"><div class="card-dot"></div> Nhiệm Vụ Hôm Nay</div>
+          <span class="badge orange" id="tasks-today-badge">0 còn lại</span>
+        </div>
+        <div id="dashboard-tasks"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:10px;width:100%" onclick="nav('tasks')">Xem tất cả →</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-left"><div class="card-dot" style="background:var(--blue)"></div> Sự Kiện Sắp Tới</div>
+          <span class="badge blue">3 sự kiện</span>
+        </div>
+        <div id="dashboard-events"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">
+          <div class="card-title-left"><div class="card-dot" style="background:var(--purple)"></div> Đội Của Tôi</div>
+        </div>
+        <div id="dashboard-team"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">
+          <div class="card-title-left"><div class="card-dot" style="background:var(--yellow)"></div> Bảng Xếp Hạng</div>
+          <span class="badge orange">Top 10</span>
+        </div>
+        <div id="dashboard-lb"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-left"><div class="card-dot" style="background:var(--green)"></div> Tiến Độ Học Tập</div>
+        </div>
+        <div id="study-progress-wrap" style="display:flex;flex-direction:column;gap:12px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ FOCUS TIMER ═══════════════ -->
+<div id="view-focus" class="view">
+  <div class="cg-2">
+    <div class="card">
+      <div class="focus-timer-wrap">
+        <div class="timer-modes" id="timer-modes">
+          <button class="timer-mode-btn active" onclick="setTimerMode('pomodoro',25,0)">🍅 Pomodoro</button>
+          <button class="timer-mode-btn" onclick="setTimerMode('short',5,0)">☕ Nghỉ ngắn</button>
+          <button class="timer-mode-btn" onclick="setTimerMode('long',15,0)">🌴 Nghỉ dài</button>
+          <button class="timer-mode-btn" onclick="setTimerMode('custom',0,0)">⚙️ Tuỳ chọn</button>
+        </div>
+        <div class="timer-circle">
+          <svg class="timer-svg" width="200" height="200" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
+            <circle id="timer-progress" cx="100" cy="100" r="88" fill="none"
+              stroke="url(#timerGrad)" stroke-width="8"
+              stroke-dasharray="553" stroke-dashoffset="553"
+              stroke-linecap="round" transition="stroke-dashoffset 1s linear"/>
+            <defs>
+              <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#ff6b00"/>
+                <stop offset="100%" style="stop-color:#ff8c42"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div>
+            <div class="timer-display" id="timer-display">25:00</div>
+            <div class="timer-session" id="timer-session">Phiên #1</div>
+          </div>
+        </div>
+        <div id="timer-subject-wrap" style="margin-bottom:14px">
+          <input type="text" class="form-input" id="timer-subject" placeholder="📝 Đang học gì? (vd: Toán rời rạc)" style="text-align:center">
+        </div>
+        <div class="timer-controls">
+          <button class="btn btn-ghost btn-icon" onclick="resetTimer()" title="Reset">🔄</button>
+          <button class="btn btn-primary" id="timer-start-btn" onclick="toggleTimer()" style="min-width:120px">▶ Bắt Đầu</button>
+          <button class="btn btn-ghost btn-icon" onclick="skipTimer()" title="Bỏ qua">⏭</button>
+        </div>
+        <div style="margin-top:16px;text-align:center;font-size:12px;color:var(--text3)">
+          🎯 Hoàn thành 1 pomodoro = +<span style="color:var(--orange);font-weight:700">15 XP</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title"><div class="card-title-left"><div class="card-dot"></div> Thống Kê Focus</div></div>
+        <div class="grid-2" style="margin-bottom:16px">
+          <div style="background:var(--bg3);border-radius:10px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:800;font-family:'Epilogue';color:var(--orange)" id="focus-today">0</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:3px">pomodoro hôm nay</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:10px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:800;font-family:'Epilogue';color:var(--blue)" id="focus-total">0</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:3px">tổng pomodoro</div>
+          </div>
+        </div>
+        <div style="background:var(--bg3);border-radius:10px;padding:14px">
+          <div style="font-size:12px;color:var(--text3);margin-bottom:10px">Tuần này (phút focus)</div>
+          <div id="focus-week-chart" style="display:flex;align-items:flex-end;gap:6px;height:60px">
+          </div>
+          <div style="display:flex;gap:6px;margin-top:5px">
+            <span style="flex:1;text-align:center;font-size:10px;color:var(--text3)">T2</span>
+            <span style="flex:1;text-align:center;font-size:10px;color:var(--text3)">T3</span>
+            <span style="flex:1;text-align:center;font-size:10px;color:var(--text3)">T4</span>
+            <span style="flex:1;text-align:center;font-size:10px;color:var(--text3)">T5</span>
+            <span style="flex:1;text-align:center;font-size:10px;color:var(--text3)">T6</span>
+            <span style="flex:1;text-align:center;font-size:10px;color:var(--text3)">T7</span>
+            <span style="flex:1;text-align:center;font-size:10px;color:var(--text3)">CN</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-title-left"><div class="card-dot" style="background:var(--blue)"></div> Lịch Sử Focus</div></div>
+        <div id="focus-history" style="display:flex;flex-direction:column;gap:8px;max-height:250px;overflow-y:auto"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TASKS ═══════════════ -->
+<div id="view-tasks" class="view">
+  <div class="cg-2">
+    <div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">
+          <div class="card-title-left"><div class="card-dot"></div> Nhiệm Vụ Hàng Ngày</div>
+          <button class="btn btn-primary btn-sm" onclick="openAddTask()">+ Thêm</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap" id="task-filter-btns">
+          <button class="timer-mode-btn active" onclick="filterTasks('all',this)">Tất cả</button>
+          <button class="timer-mode-btn" onclick="filterTasks('study',this)">📚 Học tập</button>
+          <button class="timer-mode-btn" onclick="filterTasks('health',this)">💪 Sức khoẻ</button>
+          <button class="timer-mode-btn" onclick="filterTasks('discipline',this)">🎯 Kỷ luật</button>
+          <button class="timer-mode-btn" onclick="filterTasks('done',this)">✅ Hoàn thành</button>
+        </div>
+        <div id="tasks-list"></div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title"><div class="card-title-left"><div class="card-dot" style="background:var(--yellow)"></div> Tiến Độ Hôm Nay</div></div>
+        <div style="text-align:center;padding:20px 0">
+          <div style="position:relative;width:120px;height:120px;margin:0 auto 16px">
+            <svg width="120" height="120" viewBox="0 0 120 120" style="transform:rotate(-90deg)">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="url(#pg)" stroke-width="10"
+                stroke-dasharray="314" id="tasks-progress-ring" stroke-dashoffset="314" stroke-linecap="round"/>
+              <defs><linearGradient id="pg"><stop offset="0%" stop-color="#ff6b00"/><stop offset="100%" stop-color="#ff8c42"/></linearGradient></defs>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <span style="font-family:'Epilogue';font-size:28px;font-weight:800;color:var(--orange)" id="tasks-pct">0%</span>
+              <span style="font-size:11px;color:var(--text3)">hoàn thành</span>
+            </div>
+          </div>
+          <div id="tasks-progress-text" style="font-size:14px;color:var(--text2)">0 / 0 nhiệm vụ</div>
+          <div id="tasks-xp-earned" style="font-size:12px;color:var(--yellow);margin-top:6px">+0 XP kiếm được hôm nay</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-title-left"><div class="card-dot" style="background:var(--green)"></div> Thành Tích Tuần</div></div>
+        <div id="weekly-completion" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ REWARDS ═══════════════ -->
+<div id="view-rewards" class="view">
+  <div style="margin-bottom:24px">
+    <div class="card" style="background:linear-gradient(135deg,rgba(255,107,0,0.15),rgba(255,61,0,0.08));border-color:rgba(255,107,0,0.25)">
+      <div style="display:flex;align-items:center;gap:20px">
+        <div style="font-size:52px">👑</div>
+        <div style="flex:1">
+          <div style="font-family:'Epilogue';font-size:24px;font-weight:800;margin-bottom:4px" id="rewards-rank">Sinh Viên Tập Sự</div>
+          <div style="font-size:13px;color:var(--text2)" id="rewards-rank-desc">Hãy tích lũy XP để nâng hạng!</div>
+          <div style="margin-top:10px;display:flex;align-items:center;gap:10px">
+            <div style="flex:1;height:8px;background:var(--bg4);border-radius:99px;overflow:hidden">
+              <div id="rank-bar" style="height:100%;background:linear-gradient(90deg,var(--orange),var(--orange2));width:0%;transition:width 0.5s;border-radius:99px"></div>
+            </div>
+            <span style="font-size:12px;color:var(--orange);font-weight:700" id="rank-xp-info">0 / 500 XP</span>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Epilogue';font-size:36px;font-weight:800;color:var(--orange)" id="rewards-total-xp">0</div>
+          <div style="font-size:12px;color:var(--text3)">Tổng XP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:20px">
+    <div style="font-family:'Epilogue';font-size:16px;font-weight:700;margin-bottom:14px">🏅 Huy Hiệu & Thành Tích</div>
+    <div class="grid-4" id="badges-grid"></div>
+  </div>
+
+  <div>
+    <div style="font-family:'Epilogue';font-size:16px;font-weight:700;margin-bottom:14px">🎁 Phần Thưởng Có Thể Đổi</div>
+    <div class="grid-3" id="rewards-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ LEADERBOARD ═══════════════ -->
+<div id="view-leaderboard" class="view">
+  <div class="cg-2">
+    <div class="card">
+      <div class="card-title">
+        <div class="card-title-left"><div class="card-dot"></div> Bảng Xếp Hạng Tuần</div>
+        <select style="padding:6px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:'Manrope'" id="lb-filter">
+          <option value="week">Tuần này</option>
+          <option value="month">Tháng này</option>
+          <option value="all">Tất cả</option>
+        </select>
+      </div>
+      <div id="leaderboard-list"></div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title"><div class="card-title-left"><div class="card-dot" style="background:var(--yellow)"></div> Vị Trí Của Bạn</div></div>
+        <div style="text-align:center;padding:20px 0">
+          <div style="font-size:60px;margin-bottom:10px">🎯</div>
+          <div style="font-family:'Epilogue';font-size:48px;font-weight:800;color:var(--orange)" id="my-rank">#-</div>
+          <div style="font-size:13px;color:var(--text2);margin-top:6px">trong số tất cả sinh viên</div>
+          <div style="margin-top:16px;font-size:13px;color:var(--text3)">XP của bạn: <span style="color:var(--yellow);font-weight:700" id="my-rank-xp">0</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-title-left"><div class="card-dot" style="background:var(--blue)"></div> Top Môn Học</div></div>
+        <div id="top-subjects" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ GROUPS ═══════════════ -->
+<div id="view-groups" class="view">
+  <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;align-items:center">
+    <input type="text" placeholder="🔍 Tìm nhóm học tập..." class="form-input" style="flex:1;max-width:320px">
+    <select class="form-input" style="width:auto;min-width:140px">
+      <option>Tất cả môn</option>
+      <option>Toán</option>
+      <option>Lập trình</option>
+      <option>Tiếng Anh</option>
+      <option>AI/ML</option>
+    </select>
+    <button class="btn btn-primary" onclick="openCreateGroup()">+ Tạo Nhóm Mới</button>
+  </div>
+  <div class="cg-3" id="groups-grid"></div>
+</div>
+
+<!-- ═══════════════ TEAMS ═══════════════ -->
+<div id="view-teams" class="view">
+  <div style="margin-bottom:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+    <div style="flex:1">
+      <div style="font-size:13px;color:var(--text2)">Quản lý đội nhóm học tập – gọi điện nhắc nhở đồng đội 📞</div>
+    </div>
+    <button class="btn btn-primary" onclick="openCreateTeam()">⚔️ Tạo Đội Mới</button>
+  </div>
+  <div class="cg-2" id="teams-grid"></div>
+</div>
+
+<!-- ═══════════════ SCHEDULE ═══════════════ -->
+<div id="view-schedule" class="view">
+  <div class="card">
+    <div class="card-title">
+      <div class="card-title-left"><div class="card-dot"></div> Lịch Học Tuần Này</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm">◀ Tuần trước</button>
+        <button class="btn btn-primary btn-sm">Tuần này</button>
+        <button class="btn btn-ghost btn-sm">Tuần sau ▶</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="schedule-table" id="schedule-table">
+        <thead>
+          <tr>
+            <th style="width:100px">Tiết</th>
+            <th>Thứ 2</th><th>Thứ 3</th><th>Thứ 4</th>
+            <th>Thứ 5</th><th>Thứ 6</th><th>Thứ 7</th>
+          </tr>
+        </thead>
+        <tbody id="schedule-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ EVENTS ═══════════════ -->
+<div id="view-events" class="view">
+  <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+    <button class="timer-mode-btn active" onclick="filterEvents('all',this)">🌟 Tất cả</button>
+    <button class="timer-mode-btn" onclick="filterEvents('academic',this)">📚 Học thuật</button>
+    <button class="timer-mode-btn" onclick="filterEvents('social',this)">🎉 Cộng đồng</button>
+    <button class="timer-mode-btn" onclick="filterEvents('career',this)">💼 Nghề nghiệp</button>
+    <button class="timer-mode-btn" onclick="filterEvents('sport',this)">⚽ Thể thao</button>
+  </div>
+  <div class="cg-2">
+    <div id="events-list"></div>
+    <div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title"><div class="card-title-left"><div class="card-dot"></div> Sự Kiện Nổi Bật</div></div>
+        <div id="featured-event" style="background:linear-gradient(135deg,rgba(255,107,0,0.15),rgba(155,93,229,0.1));border-radius:var(--radius);padding:16px">
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><div class="card-title-left"><div class="card-dot" style="background:var(--blue)"></div> Đăng Ký Sự Kiện</div></div>
+        <div id="registered-events" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TRIỆU HỒI ĐỒNG ĐỘI ═══════════════ -->
+<div id="view-summon" class="view">
+  <!-- Header Banner -->
+  <div class="card" style="background:linear-gradient(135deg,rgba(0,180,255,0.15),rgba(155,93,229,0.12));border-color:rgba(0,180,255,0.3);margin-bottom:24px;padding:28px 28px 22px">
+    <div style="display:flex;align-items:center;gap:20px">
+      <div style="font-size:52px;animation:flamePulse 2s infinite">📡</div>
+      <div style="flex:1">
+        <div style="font-family:'Epilogue';font-size:22px;font-weight:900;letter-spacing:-0.5px;margin-bottom:4px">Triệu Hồi Đồng Đội</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.5">Gọi điện ngay cho bạn học – nhắc deadline, rủ học nhóm, hay chỉ để hỏi thăm! 💬</div>
+      </div>
+      <div style="text-align:center;background:var(--bg3);border-radius:var(--radius);padding:14px 20px;border:1px solid var(--border2)">
+        <div style="font-family:'JetBrains Mono';font-size:28px;font-weight:700;color:var(--blue)" id="summon-online-count">0</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">đang online</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search + Filter bar -->
+  <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
+    <div style="position:relative;flex:1;max-width:360px">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3)">🔍</span>
+      <input type="text" class="form-input" style="padding-left:36px" placeholder="Tìm tên, mã sinh viên..." id="summon-search" oninput="filterClassmates()">
+    </div>
+    <select class="form-input" style="width:auto;min-width:150px" id="summon-major-filter" onchange="filterClassmates()">
+      <option value="">Tất cả chuyên ngành</option>
+      <option value="Software Engineering">Software Engineering</option>
+      <option value="Artificial Intelligence">Artificial Intelligence</option>
+      <option value="Information Technology">Information Technology</option>
+      <option value="Digital Marketing">Digital Marketing</option>
+      <option value="Graphic Design">Graphic Design</option>
+      <option value="Business Administration">Business Administration</option>
+    </select>
+    <div style="display:flex;gap:6px">
+      <button class="timer-mode-btn active" id="filter-all" onclick="setSummonFilter('all',this)">👥 Tất cả</button>
+      <button class="timer-mode-btn" id="filter-online" onclick="setSummonFilter('online',this)">🟢 Online</button>
+      <button class="timer-mode-btn" id="filter-offline" onclick="setSummonFilter('offline',this)">⚫ Offline</button>
+    </div>
+  </div>
+
+  <!-- Class grid -->
+  <div class="grid-3" id="classmates-grid" style="gap:14px"></div>
+  <div id="summon-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text3)">
+    <div style="font-size:48px;margin-bottom:12px">🔍</div>
+    <div style="font-size:14px">Không tìm thấy bạn học nào phù hợp</div>
+  </div>
+</div>
+
+    </div><!-- /page-content -->
+  </main>
+</div><!-- /main-app -->
+
+<!-- MODALS -->
+<!-- Add Task Modal -->
+<div class="modal-overlay" id="modal-add-task" onclick="closeModalOut(event,'modal-add-task')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">✅ Thêm Nhiệm Vụ Mới</div>
+      <button class="modal-close" onclick="closeModal('modal-add-task')">×</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tên nhiệm vụ</label>
+      <input type="text" class="form-input" id="new-task-name" placeholder="vd: Ôn bài 2 giờ, Chạy bộ 30 phút...">
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label">Danh mục</label>
+        <select class="form-input" id="new-task-cat">
+          <option value="study">📚 Học tập</option>
+          <option value="health">💪 Sức khoẻ</option>
+          <option value="discipline">🎯 Kỷ luật</option>
+          <option value="social">👥 Xã hội</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">XP thưởng</label>
+        <select class="form-input" id="new-task-xp">
+          <option value="10">10 XP (Dễ)</option>
+          <option value="20" selected>20 XP (Trung bình)</option>
+          <option value="35">35 XP (Khó)</option>
+          <option value="50">50 XP (Thử thách)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Lặp lại</label>
+      <select class="form-input" id="new-task-repeat">
+        <option value="daily">📅 Hàng ngày</option>
+        <option value="once">1️⃣ Một lần</option>
+        <option value="weekday">💼 Ngày đi học</option>
+      </select>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="addTask()">✨ Tạo Nhiệm Vụ</button>
+  </div>
+</div>
+
+<!-- Create Group Modal -->
+<div class="modal-overlay" id="modal-create-group" onclick="closeModalOut(event,'modal-create-group')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👥 Tạo Nhóm Học Tập</div>
+      <button class="modal-close" onclick="closeModal('modal-create-group')">×</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tên nhóm</label>
+      <input type="text" class="form-input" id="new-group-name" placeholder="vd: Chiến binh Toán Rời Rạc">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mô tả</label>
+      <input type="text" class="form-input" id="new-group-desc" placeholder="Mục tiêu, lịch học của nhóm...">
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label class="form-label">Môn học</label>
+        <select class="form-input" id="new-group-subject">
+          <option>Toán rời rạc</option>
+          <option>Lập trình C++</option>
+          <option>Tiếng Anh B1</option>
+          <option>Trí tuệ nhân tạo</option>
+          <option>Cấu trúc dữ liệu</option>
+          <option>Mạng máy tính</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Số thành viên tối đa</label>
+        <input type="number" class="form-input" id="new-group-max" value="6" min="2" max="20">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Emoji nhóm</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="group-emoji-picker">
+        <span style="font-size:24px;cursor:pointer" onclick="selectEmoji(this,'📚')">📚</span>
+        <span style="font-size:24px;cursor:pointer" onclick="selectEmoji(this,'🎯')">🎯</span>
+        <span style="font-size:24px;cursor:pointer" onclick="selectEmoji(this,'⚡')">⚡</span>
+        <span style="font-size:24px;cursor:pointer" onclick="selectEmoji(this,'🚀')">🚀</span>
+        <span style="font-size:24px;cursor:pointer" onclick="selectEmoji(this,'🔥')">🔥</span>
+        <span style="font-size:24px;cursor:pointer" onclick="selectEmoji(this,'💡')">💡</span>
+        <span style="font-size:24px;cursor:pointer" onclick="selectEmoji(this,'🏆')">🏆</span>
+        <span style="font-size:24px;cursor:pointer" onclick="selectEmoji(this,'🌟')">🌟</span>
+      </div>
+      <input type="hidden" id="new-group-emoji" value="📚">
+    </div>
+    <button class="btn btn-primary btn-full" onclick="createGroup()">🚀 Tạo Nhóm</button>
+  </div>
+</div>
+
+<!-- Create Team Modal -->
+<div class="modal-overlay" id="modal-create-team" onclick="closeModalOut(event,'modal-create-team')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">⚔️ Lập Đội Học Tập</div>
+      <button class="modal-close" onclick="closeModal('modal-create-team')">×</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tên đội</label>
+      <input type="text" class="form-input" id="new-team-name" placeholder="vd: Squad Alpha, Nhóm Bá Đạo...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mục tiêu đội</label>
+      <input type="text" class="form-input" id="new-team-goal" placeholder="vd: Ace môn AI kỳ này, Lấy 9.0...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Thêm thành viên (email FPT)</label>
+      <div style="display:flex;gap:8px">
+        <input type="text" class="form-input" id="new-member-input" placeholder="friend@fpt.edu.vn">
+        <button class="btn btn-ghost" onclick="addMemberToNew()">+ Thêm</button>
+      </div>
+    </div>
+    <div id="new-members-list" style="display:flex;flex-direction:column;gap:6px;max-height:120px;overflow-y:auto;margin-bottom:14px"></div>
+    <button class="btn btn-primary btn-full" onclick="createTeam()">⚔️ Thành Lập Đội</button>
+  </div>
+</div>
+
+<!-- Call Modal -->
+<div class="call-overlay" id="call-overlay">
+  <div class="call-modal">
+    <div class="call-avatar-wrap">
+      <div class="call-ring"></div>
+      <div class="call-ring"></div>
+      <div class="call-ring"></div>
+      <div class="call-avatar" id="call-avatar" style="background:linear-gradient(135deg,#ff6b00,#e55a00)">
+        <span id="call-initials">?</span>
+      </div>
+    </div>
+    <div class="call-name" id="call-name">Đồng Đội</div>
+    <div class="call-status" id="call-status">Đang gọi... 📞</div>
+    <div id="call-message" style="font-size:13px;color:var(--text2);margin-top:-20px;margin-bottom:28px;padding:10px 16px;background:var(--bg3);border-radius:10px;"></div>
+    <div class="call-actions">
+      <button class="call-btn decline" onclick="endCall()">📵</button>
+      <button class="call-btn answer" onclick="answerCall()">📞</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// DATA & STATE
+// ══════════════════════════════════════════════════════════════
+let state = {
+  user: null,
+  xp: 0,
+  streak: 0,
+  focusSessions: 0,
+  focusMinutes: 0,
+  timerRunning: false,
+  timerInterval: null,
+  timerSeconds: 25*60,
+  timerTotal: 25*60,
+  timerMode: 'pomodoro',
+  timerSession: 1,
+  tasks: [],
+  groups: [],
+  teams: [],
+  focusHistory: [],
+  weekFocus: [0,0,0,0,0,0,0],
+  notifications: [],
+  chatMessages: [],
+  registeredEvents: [],
+  newMembers: [],
+  selectedEmoji: '📚',
+};
+
+const RANKS = [
+  {name:'Sinh Viên Tập Sự',min:0,max:500,icon:'🌱'},
+  {name:'Học Viên Chăm Chỉ',min:500,max:1500,icon:'📖'},
+  {name:'Chiến Binh Kỷ Luật',min:1500,max:3000,icon:'⚡'},
+  {name:'Học Giả Xuất Sắc',min:3000,max:6000,icon:'🏅'},
+  {name:'Huyền Thoại FPT',min:6000,max:Infinity,icon:'👑'},
+];
+
+const COLORS = ['#ff6b00','#00e87a','#00b4ff','#9b5de5','#ffd166','#ff3d5a','#06d6a0','#e63946'];
+
+function saveState(){localStorage.setItem('fpt_state',JSON.stringify(state));}
+function loadState(){const s=localStorage.getItem('fpt_state');if(s)state=JSON.parse(s);}
+
+// ══════════════════════════════════════════════════════════════
+// SECURITY UTILITIES
+// ══════════════════════════════════════════════════════════════
+
+// SHA-256 via SubtleCrypto
+async function sha256(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// Generate cryptographically secure session token
+function genSessionToken(){
+  const arr=new Uint8Array(32);
+  crypto.getRandomValues(arr);
+  return Array.from(arr).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// Rate limiter: max 5 attempts per 15 min per key
+function getRateLimit(key){
+  const raw=localStorage.getItem('rl_'+key);
+  if(!raw)return{count:0,until:0};
+  return JSON.parse(raw);
+}
+function setRateLimit(key,data){localStorage.setItem('rl_'+key,JSON.stringify(data));}
+function checkRateLimit(key){
+  const rl=getRateLimit(key);
+  const now=Date.now();
+  if(rl.until>now)return{blocked:true,secs:Math.ceil((rl.until-now)/1000)};
+  if(rl.count>=5){
+    const until=now+15*60*1000;
+    setRateLimit(key,{count:rl.count,until});
+    return{blocked:true,secs:900};
+  }
+  return{blocked:false};
+}
+function bumpRateLimit(key){
+  const rl=getRateLimit(key);
+  const now=Date.now();
+  if(rl.until>now)return;
+  const count=(rl.count||0)+1;
+  const until=count>=5?now+15*60*1000:0;
+  setRateLimit(key,{count,until});
+}
+function clearRateLimit(key){localStorage.removeItem('rl_'+key);}
+
+// Math captcha
+let captchaAnswers={login:0,reg:0};
+function genCaptcha(type){
+  const a=Math.floor(Math.random()*9)+1;
+  const b=Math.floor(Math.random()*9)+1;
+  const ops=['+','-','×'];
+  const op=ops[Math.floor(Math.random()*3)];
+  let ans=op==='+'?a+b:op==='-'?a-b:a*b;
+  captchaAnswers[type]=ans;
+  const expr=`${a} ${op} ${b} = ?`;
+  const el=document.getElementById(type==='login'?'login-captcha-expr':'reg-captcha-expr');
+  if(el)el.textContent=expr;
+}
+
+function togglePw(id,btn){
+  const inp=document.getElementById(id);
+  if(!inp)return;
+  const show=inp.type==='password';
+  inp.type=show?'text':'password';
+  btn.textContent=show?'🙈':'👁';
+}
+
+function checkPwStrength(pw){
+  const wrap=document.getElementById('pw-strength-wrap');
+  const label=document.getElementById('pw-strength-label');
+  if(!wrap)return;
+  if(!pw){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  let score=0;
+  if(pw.length>=8)score++;
+  if(pw.length>=12)score++;
+  if(/[A-Z]/.test(pw)&&/[a-z]/.test(pw))score++;
+  if(/[0-9]/.test(pw))score++;
+  if(/[^A-Za-z0-9]/.test(pw))score++;
+  const levels=[
+    {cls:'weak',text:'Yếu – thêm ký tự!',segs:1},
+    {cls:'fair',text:'Trung bình',segs:2},
+    {cls:'good',text:'Tốt',segs:3},
+    {cls:'strong',text:'Mạnh 💪',segs:4},
+  ];
+  const lvl=score<=1?levels[0]:score<=2?levels[1]:score<=3?levels[2]:levels[3];
+  ['ps1','ps2','ps3','ps4'].forEach((id,i)=>{
+    const seg=document.getElementById(id);
+    if(!seg)return;
+    seg.className='pw-seg'+(i<lvl.segs?' '+lvl.cls:'');
+  });
+  label.textContent=lvl.text;
+  label.className='pw-strength-label '+lvl.cls;
+}
+
+function checkPwMatch(){
+  const pw=document.getElementById('reg-pass')?.value||'';
+  const confirm=document.getElementById('reg-confirm')?.value||'';
+  const hint=document.getElementById('pw-match-hint');
+  if(!hint||!confirm)return;
+  hint.style.display='block';
+  if(pw===confirm){
+    hint.textContent='✅ Mật khẩu khớp';hint.style.color='var(--green)';
+  }else{
+    hint.textContent='❌ Mật khẩu không khớp';hint.style.color='var(--red)';
+  }
+}
+
+function validateStudentId(inp){
+  const val=inp.value.toUpperCase();
+  inp.value=val;
+  const hint=document.getElementById('sid-hint');
+  if(!hint)return;
+  const valid=/^(SE|AI|IA|GD|BA|DM)\d{6}$/.test(val);
+  if(val.length===0){hint.textContent='Định dạng: SE/AI/IA/GD + 6 chữ số';hint.style.color='var(--text3)';}
+  else if(valid){hint.textContent='✅ Mã hợp lệ';hint.style.color='var(--green)';}
+  else{hint.textContent='❌ Sai định dạng (vd: SE123456)';hint.style.color='var(--red)';}
+}
+
+// ══════════════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════════════
+function switchAuthTab(tab){
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-register').classList.toggle('active',tab==='register');
+  document.getElementById('login-form').style.display=tab==='login'?'block':'none';
+  document.getElementById('register-form').style.display=tab==='register'?'block':'none';
+  if(tab==='register'){genCaptcha('reg');}
+}
+
+async function doLogin(){
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value;
+  const rateMsgEl=document.getElementById('login-rate-msg');
+
+  if(!u||!p){showToast('Vui lòng nhập đầy đủ thông tin!','error');return;}
+
+  // Rate limit check
+  const rl=checkRateLimit('login_'+u);
+  if(rl.blocked){
+    const mins=Math.ceil(rl.secs/60);
+    if(rateMsgEl){rateMsgEl.textContent=`⛔ Quá nhiều lần thử. Vui lòng đợi ${mins} phút.`;rateMsgEl.style.display='block';}
+    return;
+  }
+
+  // Check captcha if shown (after 3 fails)
+  const rl2=getRateLimit('login_'+u);
+  if((rl2.count||0)>=3){
+    const capWrap=document.getElementById('login-captcha-wrap');
+    if(capWrap){
+      capWrap.style.display='block';
+      if(!document.getElementById('login-captcha-expr').textContent)genCaptcha('login');
+      const capVal=parseInt(document.getElementById('login-captcha-input')?.value||'x');
+      if(isNaN(capVal)||capVal!==captchaAnswers.login){
+        showToast('❌ Sai captcha!','error');genCaptcha('login');return;
+      }
+    }
+  }
+
+  const users=JSON.parse(localStorage.getItem('fpt_users')||'[]');
+  const user=users.find(x=>x.email===u||x.studentId===u);
+  const hashed=await sha256(p);
+
+  if(!user||(user.passHash!==hashed&&user.pass!==btoa(p))){
+    bumpRateLimit('login_'+u);
+    const remaining=5-(getRateLimit('login_'+u).count||0);
+    showToast(`❌ Sai thông tin! Còn ${Math.max(0,remaining)} lần thử.`,'error');
+    if(rateMsgEl)rateMsgEl.style.display='none';
+    // Show captcha after 3 fails
+    if((getRateLimit('login_'+u).count||0)>=3){
+      const cw=document.getElementById('login-captcha-wrap');
+      if(cw){cw.style.display='block';genCaptcha('login');}
+    }
+    return;
+  }
+
+  // Migrate old btoa passwords to SHA-256
+  if(user.pass&&!user.passHash){
+    user.passHash=hashed;delete user.pass;
+    localStorage.setItem('fpt_users',JSON.stringify(users));
+  }
+
+  clearRateLimit('login_'+u);
+
+  // Create session token
+  const sessionToken=genSessionToken();
+  const sessionData={token:sessionToken,userId:user.email,expires:Date.now()+(document.getElementById('remember-me')?.checked?30*24*3600*1000:24*3600*1000)};
+  sessionStorage.setItem('fpt_session',JSON.stringify(sessionData));
+  if(document.getElementById('remember-me')?.checked)localStorage.setItem('fpt_session',JSON.stringify(sessionData));
+
+  startApp(user);
+}
+
+async function doRegister(){
+  const ln=document.getElementById('reg-lastname').value.trim();
+  const fn=document.getElementById('reg-firstname').value.trim();
+  const em=document.getElementById('reg-email').value.trim();
+  const sid=document.getElementById('reg-student-id').value.trim().toUpperCase();
+  const pw=document.getElementById('reg-pass').value;
+  const pw2=document.getElementById('reg-confirm').value;
+  const maj=document.getElementById('reg-major').value;
+  const agreed=document.getElementById('terms-agree')?.checked;
+  const capVal=parseInt(document.getElementById('reg-captcha-input')?.value||'x');
+
+  if(!ln||!fn||!em||!sid||!pw||!maj){showToast('Vui lòng điền đầy đủ thông tin!','error');return;}
+  if(!agreed){showToast('Vui lòng đồng ý điều khoản!','error');return;}
+  if(!/^(SE|AI|IA|GD|BA|DM)\d{6}$/.test(sid)){showToast('Mã sinh viên không đúng định dạng!','error');return;}
+  if(pw!==pw2){showToast('Mật khẩu không khớp!','error');return;}
+  if(pw.length<8){showToast('Mật khẩu tối thiểu 8 ký tự!','error');return;}
+  if(!/[A-Z]/.test(pw)||!/[0-9]/.test(pw)){showToast('Mật khẩu cần có chữ hoa và chữ số!','error');return;}
+  if(isNaN(capVal)||capVal!==captchaAnswers.reg){showToast('❌ Sai captcha! Vui lòng thử lại.','error');genCaptcha('reg');return;}
+
+  const users=JSON.parse(localStorage.getItem('fpt_users')||'[]');
+  if(users.find(x=>x.email===em)){showToast('Email đã tồn tại!','error');return;}
+  if(users.find(x=>x.studentId===sid)){showToast('Mã sinh viên đã được đăng ký!','error');return;}
+
+  const passHash=await sha256(pw);
+  const salt=genSessionToken().substring(0,16);
+  const user={
+    name:ln+' '+fn,email:em,studentId:sid,
+    passHash,salt,
+    major:maj,
+    avatar:COLORS[Math.floor(Math.random()*COLORS.length)],
+    createdAt:new Date().toISOString(),
+  };
+  users.push(user);
+  localStorage.setItem('fpt_users',JSON.stringify(users));
+  showToast('✨ Đăng ký thành công!','success');
+  setTimeout(()=>{switchAuthTab('login');document.getElementById('login-user').value=em;},1000);
+}
+
+function demoLogin(){
+  startApp({name:'Nguyễn Văn Demo',email:'demo@fpt.edu.vn',studentId:'SE123456',major:'Software Engineering',avatar:'#ff6b00'});
+}
+
+function logout(){
+  state.user=null;state.timerRunning=false;
+  if(state.timerInterval)clearInterval(state.timerInterval);
+  saveState();
+  sessionStorage.removeItem('fpt_session');
+  localStorage.removeItem('fpt_session');
+  document.getElementById('main-app').style.display='none';
+  document.getElementById('auth-screen').style.display='flex';
+  document.getElementById('login-user').value='';
+  document.getElementById('login-pass').value='';
+  const rateMsgEl=document.getElementById('login-rate-msg');
+  if(rateMsgEl)rateMsgEl.style.display='none';
+}
+
+function checkAutoLogin(){
+  const sess=JSON.parse(localStorage.getItem('fpt_session')||sessionStorage.getItem('fpt_session')||'null');
+  if(!sess||Date.now()>sess.expires)return false;
+  const users=JSON.parse(localStorage.getItem('fpt_users')||'[]');
+  const user=users.find(x=>x.email===sess.userId);
+  if(!user)return false;
+  loadState();startApp(user);return true;
+}
+
+function startApp(user){
+  loadState();
+  state.user=user;
+  if(!state.tasks||state.tasks.length===0) seedTasks();
+  if(!state.groups||state.groups.length===0) seedGroups();
+  if(!state.teams||state.teams.length===0) seedTeams();
+  if(!state.notifications||state.notifications.length===0) seedNotifications();
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('main-app').style.display='flex';
+  updateUserUI();
+  nav('dashboard');
+  saveState();
+}
+
+function updateUserUI(){
+  if(!state.user)return;
+  const init=state.user.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  const color=state.user.avatar||'#ff6b00';
+  document.getElementById('sidebar-initials').textContent=init;
+  document.getElementById('sidebar-avatar').style.background=`linear-gradient(135deg,${color},${color}aa)`;
+  document.getElementById('sidebar-name').textContent=state.user.name;
+  const rank=getRank(state.xp);
+  document.getElementById('sidebar-level').textContent=rank.icon+' '+rank.name;
+  document.getElementById('sidebar-pts').textContent=(state.xp||0)+' XP';
+  const nextRank=RANKS[RANKS.indexOf(rank)+1];
+  const pct=nextRank?Math.min(100,((state.xp-rank.min)/(rank.max-rank.min))*100):100;
+  document.getElementById('topbar-xp-fill').style.width=pct+'%';
+  document.getElementById('topbar-xp-val').textContent=state.xp||0;
+  updateTaskBadge();
+}
+
+function getRank(xp){return RANKS.slice().reverse().find(r=>xp>=r.min)||RANKS[0];}
+
+// ══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════════
+const PAGE_TITLES={
+  dashboard:'🏠 Dashboard',focus:'⏱️ Focus Timer',tasks:'✅ Nhiệm Vụ Hàng Ngày',
+  rewards:'🏆 Phần Thưởng',leaderboard:'📊 Bảng Xếp Hạng',groups:'👥 Nhóm Học Tập',
+  teams:'⚔️ Đội Của Tôi',schedule:'📅 Lịch Học',events:'🎉 Sự Kiện FPT',summon:'📡 Triệu Hồi Đồng Đội'
+};
+
+function nav(page){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const v=document.getElementById('view-'+page);
+  if(v)v.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+page+"'"))n.classList.add('active');
+  });
+  document.getElementById('topbar-title').textContent=PAGE_TITLES[page]||page;
+  const renders={
+    dashboard:renderDashboard,focus:renderFocus,tasks:renderTasks,
+    rewards:renderRewards,leaderboard:renderLeaderboard,groups:renderGroups,
+    teams:renderTeams,schedule:renderSchedule,events:renderEvents,summon:renderSummon
+  };
+  if(renders[page])renders[page]();
+  document.getElementById('notif-panel').classList.remove('show');
+}
+
+// ══════════════════════════════════════════════════════════════
+// SEED DATA
+// ══════════════════════════════════════════════════════════════
+function seedTasks(){
+  state.tasks=[
+    {id:1,name:'Học 2 tiếng – tập trung hoàn toàn',cat:'study',xp:30,repeat:'daily',done:false},
+    {id:2,name:'Ôn bài trước khi ngủ (30 phút)',cat:'study',xp:20,repeat:'daily',done:false},
+    {id:3,name:'Dậy đúng giờ (trước 7:00 AM)',cat:'discipline',xp:15,repeat:'daily',done:true},
+    {id:4,name:'Tập thể dục 30 phút',cat:'health',xp:25,repeat:'daily',done:false},
+    {id:5,name:'Không dùng điện thoại trong giờ học',cat:'discipline',xp:20,repeat:'daily',done:false},
+    {id:6,name:'Uống đủ 2 lít nước',cat:'health',xp:10,repeat:'daily',done:true},
+    {id:7,name:'Đọc 20 trang sách / bài blog kỹ thuật',cat:'study',xp:20,repeat:'daily',done:false},
+    {id:8,name:'Ghi chú lại những gì đã học trong ngày',cat:'study',xp:15,repeat:'daily',done:false},
+  ];
+  state.xp=120;state.streak=7;
+  state.weekFocus=[45,90,60,75,30,0,0];
+}
+
+function seedGroups(){
+  state.groups=[
+    {id:1,name:'Chiến Binh Toán Rời Rạc',desc:'Ôn thi cuối kỳ môn Toán rời rạc – gặp mặt T4, T6',subject:'Toán rời rạc',emoji:'📐',members:['Minh','An','Thuỷ','Đức'],max:8,open:true},
+    {id:2,name:'Code Ninjas – Lập Trình C++',desc:'Giải Leetcode, làm project – level up mỗi ngày!',subject:'Lập trình C++',emoji:'⚡',members:['Hùng','Nga','Khoa','Linh','Phú'],max:6,open:true},
+    {id:3,name:'IELTS Warriors',desc:'Target IELTS 7.0 – luyện 4 kỹ năng mỗi ngày',subject:'Tiếng Anh',emoji:'🌍',members:['Mai','Tú','Bảo'],max:5,open:true},
+    {id:4,name:'AI Research Squad',desc:'Đọc paper, implement model, thảo luận AI/ML hàng tuần',subject:'Trí tuệ nhân tạo',emoji:'🤖',members:['Nam','Duy','Trinh','Quân','Lan','Hoa'],max:6,open:false},
+    {id:5,name:'Web Dev Club',desc:'Xây dựng dự án thực tế – React, Node.js, deployment',subject:'Lập trình Web',emoji:'🚀',members:['Việt','Oanh','Tuấn'],max:8,open:true},
+    {id:6,name:'DSA Mastery',desc:'Data Structures & Algorithms – chuẩn bị phỏng vấn',subject:'Cấu trúc dữ liệu',emoji:'🏆',members:['Long','Trang','Hiếu','Phương'],max:6,open:true},
+  ];
+}
+
+function seedTeams(){
+  state.teams=[
+    {
+      id:1,name:'Alpha Squad',goal:'Ace học kỳ 3 – GPA ≥ 3.8',icon:'⚔️',
+      members:[
+        {name:'Nguyễn Minh An',email:'an@fpt.edu.vn',online:true,color:'#ff6b00'},
+        {name:'Trần Thuỷ Tiên',email:'tien@fpt.edu.vn',online:true,color:'#00b4ff'},
+        {name:'Lê Văn Hùng',email:'hung@fpt.edu.vn',online:false,color:'#9b5de5'},
+        {name:'Phạm Thị Nga',email:'nga@fpt.edu.vn',online:true,color:'#00e87a'},
+      ]
+    }
+  ];
+}
+
+function seedNotifications(){
+  state.notifications=[
+    {id:1,icon:'🎉',text:'<strong>Sự kiện mới:</strong> FPT Tech Talk – AI & Blockchain vào 15/3',time:'2 giờ trước',read:false},
+    {id:2,icon:'⚡',text:'<strong>Bạn đã đạt streak 7 ngày!</strong> Tiếp tục nào!',time:'5 giờ trước',read:false},
+    {id:3,icon:'👥',text:'<strong>Code Ninjas</strong> đã mời bạn tham gia nhóm',time:'1 ngày trước',read:false},
+    {id:4,icon:'🏆',text:'Bạn đang xếp hạng <strong>#5</strong> trên bảng xếp hạng tuần',time:'1 ngày trước',read:true},
+    {id:5,icon:'📚',text:'Nhắc nhở: <strong>Deadline bài tập Toán</strong> còn 2 ngày',time:'2 ngày trước',read:true},
+  ];
+}
+
+// ══════════════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════════════
+function renderDashboard(){
+  document.getElementById('d-xp').textContent=(state.xp||0);
+  document.getElementById('d-streak').textContent=(state.streak||0);
+  const hrs=Math.round((state.focusMinutes||0)/60*10)/10;
+  document.getElementById('d-focus').textContent=hrs+'h';
+  const done=(state.tasks||[]).filter(t=>t.done).length;
+  const total=(state.tasks||[]).length;
+  document.getElementById('d-tasks-done').textContent=done+'/'+total;
+  document.getElementById('streak-num').textContent=(state.streak||0);
+
+  // Streak days row
+  const days=['T2','T3','T4','T5','T6','T7','CN'];
+  const today=new Date().getDay();
+  let html='';
+  days.forEach((d,i)=>{
+    const dayIdx=(i+1)%7;
+    const cls=dayIdx<today?'done':dayIdx===today?'today':'missed';
+    html+=`<div class="streak-day ${cls}">${d}</div>`;
+  });
+  document.getElementById('streak-days-row').innerHTML=html;
+
+  // Dashboard tasks (top 4)
+  const tasksHtml=state.tasks.slice(0,4).map(t=>`
+    <div class="task-item ${t.done?'done':''}" onclick="toggleTask(${t.id})">
+      <div class="task-check">${t.done?'✓':''}</div>
+      <div class="task-text">${t.name}</div>
+      <div class="task-xp">+${t.xp} XP</div>
+    </div>
+  `).join('');
+  document.getElementById('dashboard-tasks').innerHTML=tasksHtml||'<div class="empty-state"><div class="empty-icon">✅</div></div>';
+  const remaining=(state.tasks||[]).filter(t=>!t.done).length;
+  document.getElementById('tasks-today-badge').textContent=remaining+' còn lại';
+
+  // Dashboard events
+  const evHtml=EVENTS.slice(0,3).map(e=>`
+    <div style="display:flex;gap:10px;padding:10px;border-radius:10px;background:var(--bg3);margin-bottom:8px;cursor:pointer" onclick="nav('events')">
+      <div style="background:var(--orange-dim);border-radius:8px;padding:6px 8px;text-align:center;flex-shrink:0">
+        <div style="font-family:'Epilogue';font-size:18px;font-weight:800;color:var(--orange)">${e.day}</div>
+        <div style="font-size:10px;color:var(--orange2)">${e.month}</div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600">${e.title}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${e.location}</div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('dashboard-events').innerHTML=evHtml;
+
+  // Dashboard team
+  const team=state.teams[0];
+  if(team){
+    const memberRows=team.members.map(m=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg4);border-radius:8px">
+        <div style="width:28px;height:28px;border-radius:50%;background:${m.color};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${m.name.split(' ').pop()[0]}</div>
+        <div style="flex:1;font-size:12px;font-weight:600">${m.name.split(' ').pop()}</div>
+        <div style="width:6px;height:6px;border-radius:50%;background:${m.online?'var(--green)':'var(--text3)'}"></div>
+        <button onclick="initiateCall('${m.name}','${m.color}')" class="call-mini-btn">📞</button>
+      </div>
+    `).join('');
+    document.getElementById('dashboard-team').innerHTML=`
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="width:40px;height:40px;border-radius:12px;background:var(--orange-dim);display:flex;align-items:center;justify-content:center;font-size:20px">⚔️</div>
+        <div><div style="font-weight:700">${team.name}</div><div style="font-size:11px;color:var(--text3)">${team.goal}</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">${memberRows}</div>
+    `;
+  }else{
+    document.getElementById('dashboard-team').innerHTML=`<div class="empty-state"><div class="empty-icon">⚔️</div><div class="empty-text">Chưa có đội – <span style="color:var(--orange);cursor:pointer" onclick="nav('teams')">Lập đội ngay!</span></div></div>`;
+  }
+
+  // Leaderboard mini
+  renderLeaderboardMini();
+
+  // Study progress
+  const subjects=[
+    {name:'Toán rời rạc',pct:72,color:'var(--orange)'},
+    {name:'Lập trình C++',pct:85,color:'var(--blue)'},
+    {name:'Tiếng Anh',pct:55,color:'var(--green)'},
+    {name:'Cơ sở dữ liệu',pct:40,color:'var(--purple)'},
+  ];
+  document.getElementById('study-progress-wrap').innerHTML=subjects.map(s=>`
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+        <span>${s.name}</span><span style="color:${s.color};font-weight:700">${s.pct}%</span>
+      </div>
+      <div style="height:6px;background:var(--bg4);border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${s.pct}%;background:${s.color};border-radius:99px;transition:width 0.8s"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderLeaderboardMini(){
+  const lbData=generateLeaderboard();
+  document.getElementById('dashboard-lb').innerHTML=lbData.slice(0,5).map((p,i)=>`
+    <div class="lb-item ${p.isMe?'me':''}">
+      <div class="lb-rank ${['gold','silver','bronze','other','other'][i]}">${i+1}</div>
+      <div class="user-avatar" style="width:28px;height:28px;font-size:11px;background:${p.color}">${p.initials}</div>
+      <div class="lb-name">${p.name}${p.isMe?' <span style="color:var(--orange);font-size:10px">(bạn)</span>':''}</div>
+      <div class="lb-pts">${p.xp} XP</div>
+    </div>
+  `).join('');
+}
+
+function generateLeaderboard(){
+  const players=[
+    {name:'Nguyễn Anh Khoa',xp:850,color:'#ff6b00',initials:'NK'},
+    {name:'Trần Minh Tú',xp:780,color:'#00b4ff',initials:'MT'},
+    {name:'Lê Thị Hoa',xp:720,color:'#9b5de5',initials:'TH'},
+    {name:'Phạm Văn Đức',xp:650,color:'#00e87a',initials:'VĐ'},
+    {name:'Bùi Thị Thu',xp:590,color:'#ffd166',initials:'TT'},
+    {name:'Hoàng Minh',xp:540,color:'#ff3d5a',initials:'HM'},
+    {name:'Đỗ Thị Lan',xp:480,color:'#06d6a0',initials:'ĐL'},
+    {name:'Vũ Quang Huy',xp:420,color:'#e63946',initials:'QH'},
+    {name:'Lý Thành Nam',xp:380,color:'#ff6b00',initials:'TN'},
+  ];
+  const myXp=state.xp||0;
+  const myEntry={name:state.user?.name||'Bạn',xp:myXp,color:state.user?.avatar||'#ff6b00',initials:(state.user?.name||'SV').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase(),isMe:true};
+  const all=[...players,myEntry].sort((a,b)=>b.xp-a.xp);
+  return all;
+}
+
+// ══════════════════════════════════════════════════════════════
+// TASKS
+// ══════════════════════════════════════════════════════════════
+function updateTaskBadge(){
+  const rem=(state.tasks||[]).filter(t=>!t.done).length;
+  document.getElementById('badge-tasks').textContent=rem;
+}
+
+function toggleTask(id){
+  const t=state.tasks.find(x=>x.id===id);
+  if(!t)return;
+  t.done=!t.done;
+  if(t.done){
+    state.xp=(state.xp||0)+t.xp;
+    state.streak=Math.max((state.streak||0),1);
+    showToast('🎉 +'+t.xp+' XP! Nhiệm vụ hoàn thành!','success');
+    updateUserUI();
+  }
+  saveState();
+  renderTasks();
+  if(document.getElementById('view-dashboard').classList.contains('active'))renderDashboard();
+}
+
+let taskFilter='all';
+function filterTasks(f,btn){
+  taskFilter=f;
+  document.querySelectorAll('#task-filter-btns .timer-mode-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderTasks();
+}
+
+function renderTasks(){
+  let tasks=state.tasks||[];
+  if(taskFilter==='done')tasks=tasks.filter(t=>t.done);
+  else if(taskFilter!=='all')tasks=tasks.filter(t=>t.cat===taskFilter);
+
+  const catIcons={study:'📚',health:'💪',discipline:'🎯',social:'👥'};
+  document.getElementById('tasks-list').innerHTML=tasks.map(t=>`
+    <div class="task-item ${t.done?'done':''}" onclick="toggleTask(${t.id})">
+      <div class="task-check">${t.done?'✓':''}</div>
+      <div style="flex:1">
+        <div class="task-text">${t.name}</div>
+        <div class="task-cat">${catIcons[t.cat]||'📌'} ${t.cat} · ${t.repeat==='daily'?'Hàng ngày':t.repeat==='weekday'?'Ngày học':'Một lần'}</div>
+      </div>
+      <div class="task-xp">+${t.xp} XP</div>
+      <button onclick="event.stopPropagation();removeTask(${t.id})" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:4px;border-radius:6px" title="Xóa">×</button>
+    </div>
+  `).join('')||'<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Không có nhiệm vụ nào</div></div>';
+
+  // Progress ring
+  const done=(state.tasks||[]).filter(t=>t.done).length;
+  const total=(state.tasks||[]).length;
+  const pct=total>0?Math.round(done/total*100):0;
+  const offset=314-314*pct/100;
+  document.getElementById('tasks-progress-ring').style.strokeDashoffset=offset;
+  document.getElementById('tasks-pct').textContent=pct+'%';
+  document.getElementById('tasks-progress-text').textContent=done+' / '+total+' nhiệm vụ';
+  const xpEarned=(state.tasks||[]).filter(t=>t.done).reduce((s,t)=>s+t.xp,0);
+  document.getElementById('tasks-xp-earned').textContent='+'+xpEarned+' XP kiếm được hôm nay';
+  updateTaskBadge();
+
+  // Weekly completion
+  const days=['T2','T3','T4','T5','T6','T7','CN'];
+  const completions=[85,70,90,65,80,40,0];
+  document.getElementById('weekly-completion').innerHTML=days.map((d,i)=>`
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:12px;color:var(--text3);width:20px">${d}</span>
+      <div style="flex:1;height:6px;background:var(--bg4);border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${completions[i]}%;background:${completions[i]>70?'var(--green)':completions[i]>40?'var(--orange)':'var(--red)'};border-radius:99px"></div>
+      </div>
+      <span style="font-size:11px;color:var(--text3);width:30px;text-align:right">${completions[i]}%</span>
+    </div>
+  `).join('');
+}
+
+function openAddTask(){
+  document.getElementById('modal-add-task').classList.add('show');
+  document.getElementById('new-task-name').value='';
+}
+
+function addTask(){
+  const name=document.getElementById('new-task-name').value.trim();
+  if(!name){showToast('Vui lòng nhập tên nhiệm vụ!','error');return;}
+  const task={
+    id:Date.now(),
+    name,
+    cat:document.getElementById('new-task-cat').value,
+    xp:parseInt(document.getElementById('new-task-xp').value),
+    repeat:document.getElementById('new-task-repeat').value,
+    done:false,
+  };
+  state.tasks.unshift(task);
+  saveState();
+  closeModal('modal-add-task');
+  showToast('✅ Đã thêm nhiệm vụ!','success');
+  renderTasks();
+  updateTaskBadge();
+}
+
+function removeTask(id){
+  state.tasks=state.tasks.filter(t=>t.id!==id);
+  saveState();renderTasks();
+}
+
+// ══════════════════════════════════════════════════════════════
+// FOCUS TIMER
+// ══════════════════════════════════════════════════════════════
+let customMin=25;
+function setTimerMode(mode,min,sec){
+  if(state.timerRunning)return;
+  state.timerMode=mode;
+  if(mode==='custom'){
+    const m=prompt('Nhập số phút (1-120):','25');
+    if(!m)return;
+    customMin=Math.min(120,Math.max(1,parseInt(m)||25));
+    min=customMin;
+  }
+  state.timerSeconds=min*60+sec;
+  state.timerTotal=min*60+sec;
+  updateTimerDisplay();
+  document.querySelectorAll('.timer-mode-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  resetTimerProgress();
+}
+
+function toggleTimer(){
+  if(state.timerRunning){
+    clearInterval(state.timerInterval);
+    state.timerRunning=false;
+    document.getElementById('timer-start-btn').textContent='▶ Tiếp Tục';
+  }else{
+    state.timerRunning=true;
+    document.getElementById('timer-start-btn').textContent='⏸ Tạm Dừng';
+    state.timerInterval=setInterval(()=>{
+      state.timerSeconds--;
+      if(state.timerSeconds<=0){
+        clearInterval(state.timerInterval);
+        state.timerRunning=false;
+        timerComplete();
+        return;
+      }
+      updateTimerDisplay();
+      updateTimerProgress();
+    },1000);
+  }
+  saveState();
+}
+
+function resetTimer(){
+  clearInterval(state.timerInterval);
+  state.timerRunning=false;
+  const mins={pomodoro:25,short:5,long:15,custom:customMin};
+  state.timerSeconds=(mins[state.timerMode]||25)*60;
+  state.timerTotal=state.timerSeconds;
+  updateTimerDisplay();
+  resetTimerProgress();
+  document.getElementById('timer-start-btn').textContent='▶ Bắt Đầu';
+}
+
+function skipTimer(){if(confirm('Bỏ qua phiên này?')){resetTimer();state.timerSession++;document.getElementById('timer-session').textContent='Phiên #'+state.timerSession;}}
+
+function timerComplete(){
+  document.getElementById('timer-start-btn').textContent='▶ Bắt Đầu';
+  if(state.timerMode==='pomodoro'){
+    state.focusSessions=(state.focusSessions||0)+1;
+    state.focusMinutes=(state.focusMinutes||0)+25;
+    state.xp=(state.xp||0)+15;
+    const day=new Date().getDay();
+    const idx=(day+6)%7;
+    state.weekFocus[idx]=(state.weekFocus[idx]||0)+25;
+    const subject=document.getElementById('timer-subject').value||'Học tập chung';
+    state.focusHistory=state.focusHistory||[];
+    state.focusHistory.unshift({subject,time:new Date().toLocaleTimeString('vi'),date:new Date().toLocaleDateString('vi'),mins:25});
+    if(state.focusHistory.length>20)state.focusHistory.pop();
+    state.timerSession++;
+    updateUserUI();
+    saveState();
+    showToast('🎉 Pomodoro xong! +15 XP · Nghỉ ngơi nhé!','success');
+    renderFocus();
+  }else{
+    showToast('✅ Thời gian nghỉ kết thúc! Sẵn sàng học tiếp?','info');
+  }
+  resetTimer();
+  document.getElementById('timer-session').textContent='Phiên #'+state.timerSession;
+}
+
+function updateTimerDisplay(){
+  const m=Math.floor(state.timerSeconds/60);
+  const s=state.timerSeconds%60;
+  document.getElementById('timer-display').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+function updateTimerProgress(){
+  const pct=1-(state.timerSeconds/state.timerTotal);
+  const dasharray=553;
+  const offset=dasharray*(1-pct);
+  document.getElementById('timer-progress').style.strokeDashoffset=offset;
+}
+
+function resetTimerProgress(){
+  document.getElementById('timer-progress').style.strokeDashoffset=553;
+}
+
+function renderFocus(){
+  document.getElementById('focus-today').textContent=(state.focusSessions||0)%(8)+( (state.focusSessions||0)===0?0:0);
+  const todaySessions=state.focusHistory?state.focusHistory.filter(h=>h.date===new Date().toLocaleDateString('vi')).length:0;
+  document.getElementById('focus-today').textContent=todaySessions;
+  document.getElementById('focus-total').textContent=state.focusSessions||0;
+
+  // Week chart
+  const maxMin=Math.max(...(state.weekFocus||[0,0,0,0,0,0,0]),1);
+  document.getElementById('focus-week-chart').innerHTML=(state.weekFocus||[0,0,0,0,0,0,0]).map(m=>`
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end">
+      <div style="width:100%;background:${m>0?'var(--orange)':'var(--bg4)'};height:${Math.max(4,m/maxMin*60)}px;border-radius:4px 4px 2px 2px;transition:height 0.5s;opacity:${m>0?1:0.3}"></div>
+    </div>
+  `).join('');
+
+  // Focus history
+  const hist=state.focusHistory||[];
+  document.getElementById('focus-history').innerHTML=hist.length?hist.map(h=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg3);border-radius:8px">
+      <span style="font-size:16px">🍅</span>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">${h.subject}</div>
+        <div style="font-size:11px;color:var(--text3)">${h.date} · ${h.time}</div>
+      </div>
+      <span style="font-size:12px;font-weight:700;color:var(--orange)">${h.mins} phút</span>
+    </div>
+  `).join(''):'<div class="empty-state"><div class="empty-icon">⏱️</div><div class="empty-text">Chưa có phiên nào</div></div>';
+}
+
+// ══════════════════════════════════════════════════════════════
+// REWARDS & LEADERBOARD
+// ══════════════════════════════════════════════════════════════
+const BADGES=[
+  {icon:'🔥',name:'Streak 7 ngày',req:7,type:'streak'},
+  {icon:'💎',name:'Streak 30 ngày',req:30,type:'streak'},
+  {icon:'⚡',name:'100 XP đầu tiên',req:100,type:'xp'},
+  {icon:'🏅',name:'500 XP',req:500,type:'xp'},
+  {icon:'🥇',name:'1000 XP',req:1000,type:'xp'},
+  {icon:'🍅',name:'10 Pomodoro',req:10,type:'focus'},
+  {icon:'⏰',name:'50 Pomodoro',req:50,type:'focus'},
+  {icon:'🎯',name:'Hoàn thành 50 task',req:50,type:'tasks'},
+  {icon:'👑',name:'Huyền Thoại',req:6000,type:'xp'},
+  {icon:'🌟',name:'Điểm danh 14 ngày',req:14,type:'streak'},
+  {icon:'🚀',name:'Top 3 tuần',req:3,type:'rank'},
+  {icon:'🏆',name:'Team Leader',req:1,type:'team'},
+];
+
+const REWARD_ITEMS=[
+  {icon:'☕',name:'Voucher cà phê',req:200,desc:'Đổi 200 XP lấy 1 voucher'},
+  {icon:'📚',name:'Sách IT miễn phí',req:500,desc:'Đổi 500 XP lấy 1 ebook'},
+  {icon:'🎮',name:'Thẻ game 50k',req:800,desc:'Đổi 800 XP'},
+  {icon:'👕',name:'Áo FPT chính hãng',req:1500,desc:'Đổi 1500 XP'},
+  {icon:'🎓',name:'Hỗ trợ học phí',req:3000,desc:'Giảm 500k học phí'},
+  {icon:'✈️',name:'Trip team building',req:5000,desc:'Chuyến đi miễn phí'},
+];
+
+function renderRewards(){
+  const xp=state.xp||0;
+  const rank=getRank(xp);
+  const nextRank=RANKS[RANKS.indexOf(rank)+1];
+  document.getElementById('rewards-rank').textContent=rank.icon+' '+rank.name;
+  document.getElementById('rewards-rank-desc').textContent=nextRank?`Còn ${nextRank.min-xp} XP để đạt "${nextRank.name}"`:'Bạn đã đạt đẳng cấp tối cao!';
+  document.getElementById('rewards-total-xp').textContent=xp;
+  document.getElementById('rank-xp-info').textContent=xp+' / '+(nextRank?nextRank.min:rank.max)+' XP';
+  const pct=nextRank?Math.min(100,(xp-rank.min)/(nextRank.min-rank.min)*100):100;
+  document.getElementById('rank-bar').style.width=pct+'%';
+
+  document.getElementById('badges-grid').innerHTML=BADGES.map(b=>{
+    const unlocked=(b.type==='xp'&&xp>=b.req)||(b.type==='streak'&&(state.streak||0)>=b.req)||(b.type==='focus'&&(state.focusSessions||0)>=b.req);
+    return`<div class="reward-card ${unlocked?'':'locked'}">
+      <div class="reward-badge ${unlocked?'unlocked':'locked'}">${unlocked?'✓':'🔒'}</div>
+      <div class="reward-icon">${b.icon}</div>
+      <div class="reward-name">${b.name}</div>
+      <div class="reward-req">${b.type==='xp'?b.req+' XP':b.type==='streak'?b.req+' ngày streak':b.req+' lần'}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('rewards-grid').innerHTML=REWARD_ITEMS.map(r=>`
+    <div class="reward-card ${xp>=r.req?'':'locked'}" onclick="${xp>=r.req?`redeemReward('${r.name}',${r.req})`:'showToast(\"Cần thêm XP!\",\"error\")'}">
+      <div class="reward-icon">${r.icon}</div>
+      <div class="reward-name">${r.name}</div>
+      <div class="reward-req">${r.desc}</div>
+      <div style="margin-top:8px">
+        <span class="badge ${xp>=r.req?'orange':''}">
+          ${xp>=r.req?'🎁 Đổi ngay':'🔒 '+r.req+' XP'}
+        </span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function redeemReward(name,cost){
+  if(confirm(`Đổi "${name}" với ${cost} XP?`)){
+    state.xp-=cost;
+    saveState();renderRewards();updateUserUI();
+    showToast('🎁 Đã đổi phần thưởng: '+name,'success');
+  }
+}
+
+function renderLeaderboard(){
+  const all=generateLeaderboard();
+  document.getElementById('leaderboard-list').innerHTML=all.map((p,i)=>{
+    const cls=i===0?'gold':i===1?'silver':i===2?'bronze':'other';
+    return`<div class="lb-item ${p.isMe?'me':''}">
+      <div class="lb-rank ${cls}">${i<3?['🥇','🥈','🥉'][i]:i+1}</div>
+      <div class="user-avatar" style="width:32px;height:32px;font-size:12px;background:${p.color};border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0">${p.initials}</div>
+      <div class="lb-name">${p.name}${p.isMe?' 👈':''}</div>
+      <div class="lb-pts">${p.xp} XP</div>
+    </div>`;
+  }).join('');
+
+  const myPos=all.findIndex(p=>p.isMe)+1;
+  document.getElementById('my-rank').textContent='#'+myPos;
+  document.getElementById('my-rank-xp').textContent=(state.xp||0);
+
+  document.getElementById('top-subjects').innerHTML=[
+    {name:'Toán rời rạc',icon:'📐',pct:85},
+    {name:'Lập trình C++',icon:'💻',pct:72},
+    {name:'Tiếng Anh',icon:'🌍',pct:68},
+    {name:'AI & Machine Learning',icon:'🤖',pct:60},
+  ].map(s=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg3);border-radius:8px">
+      <span style="font-size:18px">${s.icon}</span>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">${s.name}</div>
+        <div style="height:4px;background:var(--bg4);border-radius:99px;margin-top:4px;overflow:hidden">
+          <div style="height:100%;width:${s.pct}%;background:var(--orange);border-radius:99px"></div>
+        </div>
+      </div>
+      <span style="font-size:11px;color:var(--orange);font-weight:700">${s.pct}%</span>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// GROUPS
+// ══════════════════════════════════════════════════════════════
+let eventsFilter='all';
+function renderGroups(){
+  const g=state.groups||[];
+  document.getElementById('groups-grid').innerHTML=g.map(gr=>`
+    <div class="group-card" onclick="joinGroup(${gr.id})">
+      <div class="group-header">
+        <div class="group-icon" style="background:var(--orange-dim)">${gr.emoji}</div>
+        <div>
+          <div class="group-name">${gr.name}</div>
+          <div class="group-desc">${gr.desc}</div>
+        </div>
+      </div>
+      <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
+        <span class="badge blue">${gr.subject}</span>
+        <span class="group-tag ${gr.open?'open':'full'}">${gr.open?'Mở':'Đầy'}</span>
+      </div>
+      <div class="group-meta">
+        <div class="members-stack">
+          ${gr.members.slice(0,4).map((_,i)=>`<div class="member-avatar" style="background:${COLORS[i%COLORS.length]}">${_[0]}</div>`).join('')}
+          ${gr.members.length>4?`<div class="member-avatar" style="background:var(--bg4);color:var(--text2)">+${gr.members.length-4}</div>`:''}
+        </div>
+        <span class="group-meta-item">👥 ${gr.members.length}/${gr.max}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function joinGroup(id){
+  const g=(state.groups||[]).find(x=>x.id===id);
+  if(!g)return;
+  if(!g.open){showToast('Nhóm này đã đầy!','error');return;}
+  const myName=(state.user?.name||'Bạn').split(' ').pop();
+  if(!g.members.includes(myName)){
+    g.members.push(myName);
+    if(g.members.length>=g.max)g.open=false;
+    saveState();
+    showToast('🎉 Đã tham gia nhóm: '+g.name,'success');
+    renderGroups();
+  }else{showToast('Bạn đã ở trong nhóm này!','info');}
+}
+
+function openCreateGroup(){document.getElementById('modal-create-group').classList.add('show');}
+function selectEmoji(el,emoji){
+  state.selectedEmoji=emoji;
+  document.getElementById('new-group-emoji').value=emoji;
+  document.querySelectorAll('#group-emoji-picker span').forEach(s=>s.style.opacity='0.4');
+  el.style.opacity='1';el.style.transform='scale(1.3)';
+  setTimeout(()=>el.style.transform='',200);
+}
+
+function createGroup(){
+  const name=document.getElementById('new-group-name').value.trim();
+  if(!name){showToast('Vui lòng nhập tên nhóm!','error');return;}
+  const g={
+    id:Date.now(),name,
+    desc:document.getElementById('new-group-desc').value||'Nhóm học tập mới',
+    subject:document.getElementById('new-group-subject').value,
+    emoji:state.selectedEmoji,
+    members:[(state.user?.name||'Bạn').split(' ').pop()],
+    max:parseInt(document.getElementById('new-group-max').value)||6,
+    open:true,
+  };
+  state.groups=(state.groups||[]);
+  state.groups.unshift(g);
+  saveState();closeModal('modal-create-group');
+  showToast('🚀 Đã tạo nhóm: '+name,'success');renderGroups();
+}
+
+// ══════════════════════════════════════════════════════════════
+// TEAMS
+// ══════════════════════════════════════════════════════════════
+function renderTeams(){
+  const teams=state.teams||[];
+  if(!teams.length){
+    document.getElementById('teams-grid').innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty-state"><div class="empty-icon">⚔️</div><div class="empty-text">Chưa có đội nào. <span style="color:var(--orange);cursor:pointer" onclick="openCreateTeam()">Lập đội ngay!</span></div></div></div>`;
+    return;
+  }
+  document.getElementById('teams-grid').innerHTML=teams.map(team=>`
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--orange-dim)">${team.icon}</div>
+        <div>
+          <div class="team-name">${team.name}</div>
+          <div class="team-role">🎯 ${team.goal}</div>
+        </div>
+      </div>
+      <div class="team-members-list">
+        ${team.members.map(m=>`
+          <div class="team-member-row">
+            <div class="team-member-av" style="background:${m.color}">${m.name.split(' ').pop()[0]}</div>
+            <div class="team-member-info">
+              <div class="team-member-name">${m.name}</div>
+              <div class="team-member-status ${m.online?'online':'offline'}">${m.online?'● Đang online':'○ Offline'}</div>
+            </div>
+            <button class="call-mini-btn" onclick="initiateCall('${m.name}','${m.color}')">📞 Gọi</button>
+          </div>
+        `).join('')}
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="callAllTeam(${team.id})" style="flex:1">📣 Gọi cả đội</button>
+        <button class="btn btn-danger btn-sm" onclick="leaveTeam(${team.id})">Rời đội</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openCreateTeam(){
+  state.newMembers=[];
+  document.getElementById('new-members-list').innerHTML='';
+  document.getElementById('modal-create-team').classList.add('show');
+}
+
+function addMemberToNew(){
+  const inp=document.getElementById('new-member-input');
+  const val=inp.value.trim();
+  if(!val){showToast('Nhập email thành viên!','error');return;}
+  const name=val.split('@')[0].replace(/\./g,' ').split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+  state.newMembers.push({name,email:val,online:Math.random()>0.3,color:COLORS[state.newMembers.length%COLORS.length]});
+  inp.value='';
+  document.getElementById('new-members-list').innerHTML=state.newMembers.map((m,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg3);border-radius:8px">
+      <div style="width:24px;height:24px;border-radius:50%;background:${m.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">${m.name[0]}</div>
+      <span style="flex:1;font-size:12px">${m.name}</span><span style="font-size:11px;color:var(--text3)">${m.email}</span>
+      <button onclick="state.newMembers.splice(${i},1);addMemberToNew()" style="background:none;border:none;cursor:pointer;color:var(--red)">×</button>
+    </div>
+  `).join('');
+}
+
+function createTeam(){
+  const name=document.getElementById('new-team-name').value.trim();
+  if(!name){showToast('Nhập tên đội!','error');return;}
+  const me={name:state.user?.name||'Bạn',email:state.user?.email||'me@fpt.edu.vn',online:true,color:state.user?.avatar||'#ff6b00'};
+  const team={
+    id:Date.now(),name,icon:'⚔️',
+    goal:document.getElementById('new-team-goal').value||'Học tốt kỳ này',
+    members:[me,...(state.newMembers||[])],
+  };
+  state.teams=(state.teams||[]);
+  state.teams.push(team);
+  state.newMembers=[];
+  saveState();closeModal('modal-create-team');
+  showToast('⚔️ Đã thành lập đội: '+name,'success');renderTeams();
+}
+
+function leaveTeam(id){
+  if(confirm('Bạn muốn rời đội này?')){
+    state.teams=(state.teams||[]).filter(t=>t.id!==id);
+    saveState();renderTeams();showToast('Đã rời đội','info');
+  }
+}
+
+function callAllTeam(id){
+  const team=(state.teams||[]).find(t=>t.id===id);
+  if(!team)return;
+  const online=team.members.filter(m=>m.online&&m.name!==state.user?.name);
+  if(!online.length){showToast('Không có thành viên nào online!','info');return;}
+  initiateCall(online[0].name,online[0].color,'📣 Triệu tập họp đội ngay!');
+}
+
+// ══════════════════════════════════════════════════════════════
+// CALL FEATURE
+// ══════════════════════════════════════════════════════════════
+function initiateCall(name,color,msg){
+  document.getElementById('call-initials').textContent=name.split(' ').pop()[0].toUpperCase();
+  document.getElementById('call-avatar').style.background=`linear-gradient(135deg,${color},${color}aa)`;
+  document.getElementById('call-name').textContent=name;
+  document.getElementById('call-status').textContent='Đang gọi... 📞';
+  document.getElementById('call-message').textContent=msg||'🔔 Nhắc nhở: Đến giờ học rồi!';
+  document.getElementById('call-overlay').classList.add('show');
+
+  setTimeout(()=>{
+    if(document.getElementById('call-overlay').classList.contains('show')){
+      document.getElementById('call-status').textContent='📵 Không nghe máy...';
+      setTimeout(endCall,2000);
+    }
+  },8000);
+}
+
+function answerCall(){
+  document.getElementById('call-status').textContent='✅ Đã kết nối! (Demo)';
+  setTimeout(()=>{endCall();showToast('📞 Cuộc gọi kết thúc','info');},2000);
+}
+
+function endCall(){
+  document.getElementById('call-overlay').classList.remove('show');
+}
+
+// ══════════════════════════════════════════════════════════════
+// SCHEDULE
+// ══════════════════════════════════════════════════════════════
+const SCHEDULE_DATA=[
+  {slot:'1-3 (7:30-9:45)',days:[{sub:'Toán rời rạc',room:'A101',color:'#ff6b00'},null,{sub:'Cấu trúc DL',room:'B203',color:'#00b4ff'},null,{sub:'Tiếng Anh B1',room:'A203',color:'#9b5de5'},null]},
+  {slot:'4-6 (9:55-12:10)',days:[null,{sub:'Lập trình C++',room:'Lab 3',color:'#00e87a'},{sub:'Lập trình C++',room:'Lab 3',color:'#00e87a'},null,null,{sub:'Mạng máy tính',room:'A305',color:'#ffd166'}]},
+  {slot:'7-9 (13:00-15:15)',days:[{sub:'Tiếng Anh B1',room:'A203',color:'#9b5de5'},null,null,{sub:'Cơ sở dữ liệu',room:'A102',color:'#ff3d5a'},{sub:'Lập trình C++',room:'Lab 3',color:'#00e87a'},null]},
+  {slot:'10-12 (15:25-17:40)',days:[null,{sub:'Toán cao cấp',room:'B101',color:'#06d6a0'},null,null,null,{sub:'Thể dục',room:'Sân',color:'#ffd166'}]},
+];
+
+function renderSchedule(){
+  document.getElementById('schedule-body').innerHTML=SCHEDULE_DATA.map(row=>`
+    <tr>
+      <td style="color:var(--text3);font-size:11px;font-weight:600">${row.slot}</td>
+      ${row.days.map(d=>d?`<td><span class="subject-badge" style="background:${d.color}22;color:${d.color}">${d.sub}</span><div style="font-size:10px;color:var(--text3);margin-top:2px">${d.room}</div></td>`:'<td></td>').join('')}
+    </tr>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// EVENTS
+// ══════════════════════════════════════════════════════════════
+const EVENTS=[
+  {id:1,title:'FPT Tech Talk – AI & Blockchain 2025',desc:'Diễn giả đến từ Google, Vingroup chia sẻ xu hướng công nghệ',day:'15',month:'MAR',location:'Hội trường A – FPT Đà Nẵng',type:'academic',hot:true},
+  {id:2,title:'Hackathon FPT 2025 – 48 giờ code',desc:'Giải nhất 50 triệu đồng + cơ hội thực tập tại FPT Software',day:'22',month:'MAR',location:'Toàn bộ khu campus FPT',type:'academic',hot:true},
+  {id:3,title:'FPT Career Fair – Kết nối doanh nghiệp',desc:'200+ nhà tuyển dụng, cơ hội thực tập và việc làm hấp dẫn',day:'1',month:'APR',location:'Nhà thi đấu FPT Arena',type:'career',hot:true},
+  {id:4,title:'Giải bóng đá sinh viên FPT Cup',desc:'Giao lưu thể thao, tăng cường đoàn kết sinh viên',day:'5',month:'APR',location:'Sân bóng FPT Campus',type:'sport',hot:false},
+  {id:5,title:'Workshop: Xây dựng Portfolio IT',desc:'Hướng dẫn tạo portfolio ấn tượng để săn internship',day:'8',month:'APR',location:'Phòng hội thảo B2 – Tầng 3',type:'career',hot:false},
+  {id:6,title:'FPT Talent Show mùa 3',desc:'Đêm văn nghệ tài năng sinh viên – đăng ký biểu diễn ngay!',day:'12',month:'APR',location:'Sân khấu ngoài trời',type:'social',hot:false},
+  {id:7,title:'Ngày hội sách FPT Library Day',desc:'Trao đổi sách, giao lưu với tác giả, nhận sách miễn phí',day:'18',month:'APR',location:'Thư viện FPT – Tầng 1',type:'social',hot:false},
+];
+
+function filterEvents(f,btn){
+  eventsFilter=f;
+  document.querySelectorAll('#view-events .timer-mode-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderEvents();
+}
+
+function renderEvents(){
+  let events=EVENTS;
+  if(eventsFilter!=='all')events=events.filter(e=>e.type===eventsFilter);
+  const typeLabels={academic:'Học thuật',social:'Cộng đồng',career:'Nghề nghiệp',sport:'Thể thao'};
+  document.getElementById('events-list').innerHTML=events.map(e=>`
+    <div class="event-item" onclick="registerEvent(${e.id})">
+      <div class="event-date-box">
+        <div class="event-day">${e.day}</div>
+        <div class="event-month">${e.month}</div>
+      </div>
+      <div class="event-info">
+        <div class="event-title">${e.title}${e.hot?' 🔥':''}</div>
+        <div class="event-desc">${e.desc}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">📍 ${e.location}</div>
+        <div class="event-tags">
+          <span class="event-tag ${e.type}">${typeLabels[e.type]||e.type}</span>
+          ${(state.registeredEvents||[]).includes(e.id)?'<span class="event-tag" style="background:var(--green-dim);color:var(--green)">✓ Đã đăng ký</span>':'<span class="event-tag" style="background:var(--bg4);color:var(--text3)">Đăng ký</span>'}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const featured=EVENTS.find(e=>e.hot);
+  if(featured){
+    document.getElementById('featured-event').innerHTML=`
+      <div style="font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">🔥 Sự Kiện Hot</div>
+      <div style="font-family:'Epilogue';font-size:18px;font-weight:800;margin-bottom:8px">${featured.title}</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:12px">${featured.desc}</div>
+      <div style="font-size:12px;color:var(--text3)">📅 ${featured.day}/${featured.month} · 📍 ${featured.location}</div>
+      <button class="btn btn-primary btn-sm" style="margin-top:14px" onclick="registerEvent(${featured.id})">
+        ${(state.registeredEvents||[]).includes(featured.id)?'✓ Đã đăng ký':'🎯 Đăng ký ngay'}
+      </button>
+    `;
+  }
+
+  const regs=EVENTS.filter(e=>(state.registeredEvents||[]).includes(e.id));
+  document.getElementById('registered-events').innerHTML=regs.length?regs.map(e=>`
+    <div style="display:flex;gap:10px;align-items:center;padding:9px 12px;background:var(--bg3);border-radius:8px">
+      <div style="width:36px;height:36px;background:var(--green-dim);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--green)">${e.day}</div>
+      <div style="flex:1;font-size:12px;font-weight:600">${e.title}</div>
+      <span style="font-size:10px;color:var(--green)">✓</span>
+    </div>
+  `).join(''):'<div style="font-size:12px;color:var(--text3);text-align:center;padding:20px">Chưa đăng ký sự kiện nào</div>';
+}
+
+function registerEvent(id){
+  state.registeredEvents=state.registeredEvents||[];
+  if(state.registeredEvents.includes(id)){
+    state.registeredEvents=state.registeredEvents.filter(x=>x!==id);
+    showToast('Đã huỷ đăng ký','info');
+  }else{
+    state.registeredEvents.push(id);
+    state.xp=(state.xp||0)+10;
+    saveState();updateUserUI();
+    showToast('🎉 Đăng ký thành công! +10 XP','success');
+  }
+  saveState();renderEvents();
+}
+
+// ══════════════════════════════════════════════════════════════
+// TRIỆU HỒI ĐỒNG ĐỘI
+// ══════════════════════════════════════════════════════════════
+const CLASS_ROSTER = [
+  {id:'SV01',name:'Nguyễn Minh Anh',studentId:'SE123401',major:'Software Engineering',avatar:'👩‍💻',color:'#ff6b00',phone:'0901 234 567'},
+  {id:'SV02',name:'Trần Văn Bình',studentId:'SE123402',major:'Software Engineering',avatar:'👨‍💻',color:'#00b4ff',phone:'0912 345 678'},
+  {id:'SV03',name:'Lê Thị Cẩm',studentId:'AI123403',major:'Artificial Intelligence',avatar:'👩‍🎓',color:'#9b5de5',phone:'0923 456 789'},
+  {id:'SV04',name:'Phạm Quốc Dũng',studentId:'SE123404',major:'Software Engineering',avatar:'🧑‍💻',color:'#00e87a',phone:'0934 567 890'},
+  {id:'SV05',name:'Hoàng Thị Lan',studentId:'IA123405',major:'Information Technology',avatar:'👩‍🔬',color:'#ffd166',phone:'0945 678 901'},
+  {id:'SV06',name:'Vũ Đức Mạnh',studentId:'SE123406',major:'Software Engineering',avatar:'🧑‍🎓',color:'#ff3d5a',phone:'0956 789 012'},
+  {id:'SV07',name:'Đặng Thị Ngọc',studentId:'GD123407',major:'Graphic Design',avatar:'👩‍🎨',color:'#ff8c42',phone:'0967 890 123'},
+  {id:'SV08',name:'Bùi Thanh Phong',studentId:'AI123408',major:'Artificial Intelligence',avatar:'👨‍🔬',color:'#00b4ff',phone:'0978 901 234'},
+  {id:'SV09',name:'Ngô Minh Quân',studentId:'SE123409',major:'Software Engineering',avatar:'🧑‍💼',color:'#9b5de5',phone:'0989 012 345'},
+  {id:'SV10',name:'Tô Thị Hồng',studentId:'DM123410',major:'Digital Marketing',avatar:'👩‍💼',color:'#ffd166',phone:'0990 123 456'},
+  {id:'SV11',name:'Đinh Văn Sơn',studentId:'SE123411',major:'Software Engineering',avatar:'👨‍🎓',color:'#00e87a',phone:'0901 234 001'},
+  {id:'SV12',name:'Lý Thị Tuyết',studentId:'BA123412',major:'Business Administration',avatar:'👩‍💻',color:'#ff6b00',phone:'0912 345 002'},
+  {id:'SV13',name:'Cao Văn Tuấn',studentId:'AI123413',major:'Artificial Intelligence',avatar:'🧑‍🔬',color:'#00b4ff',phone:'0923 456 003'},
+  {id:'SV14',name:'Mai Thị Uyên',studentId:'SE123414',major:'Software Engineering',avatar:'👩‍🎓',color:'#ff3d5a',phone:'0934 567 004'},
+  {id:'SV15',name:'Hồ Đức Vinh',studentId:'IA123415',major:'Information Technology',avatar:'🧑‍💻',color:'#9b5de5',phone:'0945 678 005'},
+];
+
+// Assign random online status (refreshes each visit)
+let classOnlineStatus = {};
+CLASS_ROSTER.forEach(s => {
+  classOnlineStatus[s.id] = Math.random() > 0.4;
+});
+
+let summonFilter = 'all';
+let _summonFilteredData = [...CLASS_ROSTER];
+
+function renderSummon(){
+  // count online
+  const onlineCount = CLASS_ROSTER.filter(s=>classOnlineStatus[s.id]).length;
+  const el = document.getElementById('summon-online-count');
+  if(el) el.textContent = onlineCount;
+  filterClassmates();
+}
+
+function setSummonFilter(f, btn){
+  summonFilter = f;
+  document.querySelectorAll('#view-summon .timer-mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  filterClassmates();
+}
+
+function filterClassmates(){
+  const q = (document.getElementById('summon-search')||{}).value?.toLowerCase()||'';
+  const major = (document.getElementById('summon-major-filter')||{}).value||'';
+  let data = CLASS_ROSTER.filter(s=>{
+    const matchQ = !q || s.name.toLowerCase().includes(q) || s.studentId.toLowerCase().includes(q);
+    const matchMajor = !major || s.major === major;
+    const isOnline = classOnlineStatus[s.id];
+    const matchFilter = summonFilter==='all' || (summonFilter==='online'&&isOnline) || (summonFilter==='offline'&&!isOnline);
+    return matchQ && matchMajor && matchFilter;
+  });
+  _summonFilteredData = data;
+  renderClassGrid(data);
+}
+
+function renderClassGrid(data){
+  const grid = document.getElementById('classmates-grid');
+  const empty = document.getElementById('summon-empty');
+  if(!grid) return;
+  if(!data.length){ grid.innerHTML=''; if(empty)empty.style.display='block'; return; }
+  if(empty) empty.style.display='none';
+  // Exclude current user from list
+  const myId = state.user?.studentId;
+  const filtered = data.filter(s => s.studentId !== myId);
+
+  grid.innerHTML = filtered.map(s=>{
+    const online = classOnlineStatus[s.id];
+    const statusColor = online ? 'var(--green)' : 'var(--text3)';
+    const statusText = online ? '🟢 Online' : '⚫ Offline';
+    const majorBadge = {
+      'Software Engineering':'badge blue',
+      'Artificial Intelligence':'badge purple',
+      'Information Technology':'badge green',
+      'Digital Marketing':'badge orange',
+      'Graphic Design':'badge orange',
+      'Business Administration':'badge',
+    }[s.major]||'badge';
+    return `
+    <div class="team-card" style="cursor:default;transition:all 0.2s" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px">
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,${s.color},${s.color}99);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;position:relative;border:2px solid ${online?'var(--green)':'transparent'}">
+          ${s.avatar}
+          <div style="position:absolute;bottom:1px;right:1px;width:12px;height:12px;border-radius:50%;background:${online?'var(--green)':'var(--text3)'};border:2px solid var(--bg3)"></div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Epilogue';font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.name}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;font-family:'JetBrains Mono'">${s.studentId}</div>
+          <div style="margin-top:6px"><span class="${majorBadge}" style="font-size:10px">${s.major.split(' ').slice(0,2).join(' ')}</span></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-size:11px;color:${statusColor};font-weight:600">${statusText}</div>
+        <div style="font-size:11px;color:var(--text3)">${s.phone}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm" style="flex:1;background:var(--blue-dim);color:var(--blue);border:1px solid rgba(0,180,255,0.2);font-size:11px" onclick="summonCall('${s.id}','${s.name}','${s.color}','${s.avatar}','📞 Nhắc nộp bài tập')">
+          📞 Gọi
+        </button>
+        <button class="btn btn-ghost btn-sm" style="flex:1;font-size:11px" onclick="summonCall('${s.id}','${s.name}','${s.color}','${s.avatar}','📚 Rủ đi học nhóm!')">
+          👥 Nhóm
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function summonCall(id, name, color, avatar, defaultMsg){
+  const el = document.getElementById('call-overlay');
+  document.getElementById('call-name').textContent = name;
+  document.getElementById('call-initials').textContent = avatar;
+  document.getElementById('call-avatar').style.background = `linear-gradient(135deg,${color},${color}99)`;
+  document.getElementById('call-avatar').style.fontSize = '32px';
+  document.getElementById('call-status').textContent = 'Đang gọi... 📞';
+  document.getElementById('call-message').textContent = defaultMsg;
+  el.classList.add('show');
+
+  // Simulate ringing 4s then connect or miss
+  clearTimeout(window._callTimeout);
+  window._callTimeout = setTimeout(()=>{
+    if(el.classList.contains('show')){
+      const pick = Math.random()>0.3;
+      if(pick){
+        document.getElementById('call-status').textContent = '✅ Đã kết nối!';
+        document.getElementById('call-message').textContent = `${name} đã nghe máy 👋`;
+        clearTimeout(window._callEnd);
+        window._callEnd = setTimeout(()=>endCall(),3500);
+      } else {
+        document.getElementById('call-status').textContent = '📵 Không bắt máy';
+        document.getElementById('call-message').textContent = `${name} hiện không trả lời`;
+        clearTimeout(window._callEnd);
+        window._callEnd = setTimeout(()=>endCall(),2500);
+      }
+    }
+  },4000);
+}
+
+function endCall(){
+  document.getElementById('call-overlay').classList.remove('show');
+  clearTimeout(window._callTimeout);
+  clearTimeout(window._callEnd);
+  showToast('Cuộc gọi đã kết thúc','info');
+}
+
+function answerCall(){
+  document.getElementById('call-status').textContent = '✅ Đang kết nối...';
+  document.getElementById('call-message').textContent = 'Microphone đang hoạt động 🎙️';
+  setTimeout(()=>endCall(),3000);
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// NOTIFICATIONS
+// ══════════════════════════════════════════════════════════════
+function toggleNotif(){
+  const panel=document.getElementById('notif-panel');
+  panel.classList.toggle('show');
+  renderNotifs();
+}
+
+function renderNotifs(){
+  const list=document.getElementById('notif-list');
+  const notifs=state.notifications||[];
+  list.innerHTML=notifs.length?notifs.map(n=>`
+    <div class="notif-item ${n.read?'':'unread'}" onclick="readNotif(${n.id})">
+      <div class="notif-item-icon">${n.icon}</div>
+      <div>
+        <div class="notif-item-text">${n.text}</div>
+        <div class="notif-item-time">${n.time}</div>
+      </div>
+      ${!n.read?'<div style="width:7px;height:7px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:3px"></div>':''}
+    </div>
+  `).join(''):'<div style="padding:20px;text-align:center;font-size:12px;color:var(--text3)">Không có thông báo</div>';
+  const unread=notifs.filter(n=>!n.read).length;
+  document.getElementById('notif-dot').style.display=unread?'block':'none';
+}
+
+function readNotif(id){
+  const n=(state.notifications||[]).find(x=>x.id===id);
+  if(n)n.read=true;
+  saveState();renderNotifs();
+}
+
+function markAllRead(){
+  (state.notifications||[]).forEach(n=>n.read=true);
+  saveState();renderNotifs();
+}
+
+// ══════════════════════════════════════════════════════════════
+// MODAL UTILS
+// ══════════════════════════════════════════════════════════════
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+function closeModalOut(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+
+// ══════════════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════════════
+function showToast(msg,type='info'){
+  const t=document.getElementById('toast');
+  t.textContent='';
+  const icons={success:'✅',error:'❌',info:'💡'};
+  t.innerHTML=(icons[type]||'💡')+' '+msg;
+  t.className='toast '+type+' show';
+  clearTimeout(t._timeout);
+  t._timeout=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ══════════════════════════════════════════════════════════════
+// CLOSE NOTIF ON OUTSIDE CLICK
+// ══════════════════════════════════════════════════════════════
+document.addEventListener('click',e=>{
+  const panel=document.getElementById('notif-panel');
+  if(panel&&!panel.contains(e.target)&&!e.target.closest('.topbar-notif')){
+    panel.classList.remove('show');
+  }
+});
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+loadState();
+updateTimerDisplay();
+// Try auto-login from saved session
+if(!checkAutoLogin()){
+  // Init captcha when register tab is shown
+  genCaptcha('reg');
+}
+</script>
+</body>
+</html>
